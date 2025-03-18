@@ -24,14 +24,21 @@ import { MetaHeader } from "./components/MetaHeader";
 import { RouterContainer } from "./components/RouterContainer";
 import { SideNav } from "./components/SideNav";
 import { TopBar } from "./components/TopBar";
-import { RenderOptionsProvider } from "./components/contexts/OptionsContext";
+import {
+  RenderOptionsProvider,
+  useRenderOptions,
+} from "./components/contexts/OptionsContext";
+import type { ParsedTRPCRouter } from "@src/parseV2/types";
+import { Container } from "./v2/Container";
 
 export function RootComponent({
   rootRouter,
+  parsedRouter,
   options,
   trpc,
 }: {
   rootRouter: ParsedRouter;
+  parsedRouter: ParsedTRPCRouter;
   options: RenderOptions;
   trpc: ReturnType<typeof createTRPCReact>;
 }) {
@@ -42,7 +49,7 @@ export function RootComponent({
           <SiteNavigationContextProvider>
             <ClientProviders trpc={trpc} options={options}>
               <HotKeysContextProvider>
-                <RenderOptionsProvider options={options}>
+                <RenderOptionsProvider options={options} router={parsedRouter}>
                   <SearchOverlay>
                     <div className="relative flex h-full w-full flex-1 flex-col">
                       <AppInnards rootRouter={rootRouter} options={options} />
@@ -80,7 +87,7 @@ function ClientProviders({
         if (options.transformer === "superjson") return superjson;
         return undefined;
       })(),
-    }),
+    })
   );
   const [queryClient] = useState(() => new QueryClient());
 
@@ -101,9 +108,11 @@ function AppInnards({
   rootRouter: ParsedRouter;
   options: RenderOptions;
 }) {
+  const { router } = useRenderOptions();
+
   const [sidebarOpen, setSidebarOpen] = useLocalStorage(
     "trpc-panel.show-minimap",
-    true,
+    true
   );
   const { openAndNavigateTo } = useSiteNavigationContext();
 
@@ -131,6 +140,9 @@ function AppInnards({
           <div className="container max-w-6xl p-4 pt-8">
             <MetaHeader meta={options.meta} />
             <RouterContainer router={rootRouter} options={options} />
+            {Object.entries(router).map(([_key, routerOrProcedure]) => {
+              return <Container item={routerOrProcedure} />;
+            })}
           </div>
         </div>
       </div>

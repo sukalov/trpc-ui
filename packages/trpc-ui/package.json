@@ -33,7 +33,11 @@
   },
   "peerDependencies": {
     "@trpc/server": "^11.0.0-next-beta.264",
-    "zod": "^3.19.1"
+    "zod": "^3.19.1",
+    "zod-to-json-schema": "^3.20.0",
+    "valibot": "^1.0.0-rc.4",
+    "@valibot/to-json-schema": "^1.0.0-rc.0",
+    "arktype": "^2.1.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -93,9 +97,12 @@
     "zustand": "^4.1.5"
   },
   "dependencies": {
+    "@jsonforms/material-renderers": "^3.5.1",
+    "@jsonforms/react": "^3.5.1",
     "@monaco-editor/react": "^4.7.0",
     "@stoplight/json-schema-sampler": "^0.3.0",
     "@textea/json-viewer": "^3.0.0",
+    "@types/json-schema": "^7.0.15",
     "clsx": "^2.1.1",
     "fuzzysort": "^2.0.4",
     "nuqs": "^2.2.1",
@@ -105,7 +112,6 @@
     "react-markdown": "^9.0.1",
     "string-byte-length": "^1.6.0",
     "tailwind-merge": "^2.5.5",
-    "url": "^0.11.0",
-    "zod-to-json-schema": "^3.20.0"
+    "url": "^0.11.0"
   }
 }

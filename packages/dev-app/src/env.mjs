@@ -5,8 +5,8 @@ import { z } from "zod";
  * built with invalid env vars.
  */
 const server = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]),
-  NEXT_PUBLIC_SUPERJSON: z.enum(["true", "false"]),
+  NODE_ENV: z.enum(["development", "test", "production"]).optional(),
+  NEXT_PUBLIC_SUPERJSON: z.enum(["true", "false"]).optional(),
 });
 
 /**
@@ -14,7 +14,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  NEXT_PUBLIC_SUPERJSON: z.enum(["true", "false"]),
+  NEXT_PUBLIC_SUPERJSON: z.enum(["true", "false"]).optional(),
 });
 
 /**
@@ -51,7 +51,7 @@ if (!!process.env.SKIP_ENV_VALIDATION === false) {
   if (parsed.success === false) {
     console.error(
       "❌ Invalid environment variables:",
-      parsed.error.flatten().fieldErrors,
+      parsed.error.flatten().fieldErrors
     );
     throw new Error("Invalid environment variables");
   }
@@ -65,7 +65,7 @@ if (!!process.env.SKIP_ENV_VALIDATION === false) {
         throw new Error(
           process.env.NODE_ENV === "production"
             ? "❌ Attempted to access a server-side environment variable on the client"
-            : `❌ Attempted to access server-side environment variable '${prop}' on the client`,
+            : `❌ Attempted to access server-side environment variable '${prop}' on the client`
         );
       return target[/** @type {keyof typeof target} */ (prop)];
     },
