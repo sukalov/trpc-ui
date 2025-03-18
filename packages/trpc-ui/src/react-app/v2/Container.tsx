@@ -8,25 +8,27 @@ import type { Router, Procedure } from "@src/parseV2/types";
 
 export function Container({ item }: { item: Router | Procedure }) {
   if (item.type === "router") {
-    return Object.entries(item.children).map(([_key, routerOrProcedure]) => (
+    return (
       <CollapsableSection
-        fullPath={routerOrProcedure.path}
-        titleElement={item.path.toString()}
+        fullPath={item.path}
+        titleElement={item.path.at(-1)}
         sectionType={"router"}
         isRoot={false}
       >
         <div className="space-y-1 border-l-grey-400 p-1">
-          <Container item={routerOrProcedure} />
+          {Object.entries(item.children).map(([_key, routerOrProcedure]) => {
+            return <Container item={routerOrProcedure} />;
+          })}
         </div>
       </CollapsableSection>
-    ));
+    );
   }
   return (
     <CollapsableSection
       fullPath={item.path}
       sectionType={item.type}
       isRoot={false}
-      titleElement={item.path.toString()}
+      titleElement={item.path.at(-1)}
     >
       <Form procedure={item} />
     </CollapsableSection>

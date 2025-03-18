@@ -139,7 +139,8 @@ function AppInnards({
         >
           <div className="container max-w-6xl p-4 pt-8">
             <MetaHeader meta={options.meta} />
-            <RouterContainer router={rootRouter} options={options} />
+            {/* <RouterContainer router={rootRouter} options={options} /> */}
+            <pre>{JSON.stringify(router, null, 2)}</pre>
             {Object.entries(router).map(([_key, routerOrProcedure]) => {
               return <Container item={routerOrProcedure} />;
             })}

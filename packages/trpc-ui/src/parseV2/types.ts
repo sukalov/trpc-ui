@@ -1,4 +1,4 @@
-import type { JSONSchema7Type } from "json-schema";
+import type { JSONSchema7Object } from "json-schema";
 
 /**
  * Type representing the validator types supported by the parser
@@ -24,7 +24,7 @@ export type Procedure = BaseNodeType & {
   type: "mutation" | "query";
   meta: ProcedureMeta;
   validator: ValidatorType;
-  schema?: JSONSchema7Type;
+  schema?: JSONSchema7Object;
 };
 
 /**
@@ -38,4 +38,5 @@ export type Router = BaseNodeType & {
 /**
  * Type representing the output of the parseTRPCRouter function
  */
+// TODO rename this to children
 export type ParsedTRPCRouter = Record<string, Router | Procedure>;

@@ -25,7 +25,7 @@ const App = dynamic(
           env.NEXT_PUBLIC_SUPERJSON === "false" ? undefined : "superjson",
         meta: {
           title: "Dev App Title",
-          description: JSON.stringify(parse, null, 2),
+          // description: JSON.stringify(parse, null, 2),
         },
       }}
       trpc={trpc}

@@ -2,8 +2,12 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import type { Type as ArkTypeValidator } from "arktype";
 import { toJsonSchema } from "@valibot/to-json-schema";
 import * as v from "valibot";
-import type { ParsedTRPCRouter } from "./types";
+import type { ParsedTRPCRouter, Router } from "./types";
 import { detectValidatorType } from "./detectValidator";
+
+export function parseRootRouter(router: any): Router {
+  return parseTRPCRouter(router, []) as unknown as Router;
+}
 
 /**
  * Recursively parses a tRPC router structure and its sub-routers
