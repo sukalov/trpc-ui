@@ -1,7 +1,10 @@
 import { toJsonSchema } from "@valibot/to-json-schema";
 import type { Type as ArkTypeValidator } from "arktype";
+import { mergeConfigs } from "tailwind-merge";
 import * as v from "valibot";
 import { zodToJsonSchema } from "zod-to-json-schema";
+import * as z3 from "zod/v3";
+import * as z4 from "zod/v4";
 import { detectValidatorType } from "./detectValidator";
 import type { ParsedTRPCRouter, Router } from "./types";
 
@@ -69,13 +72,20 @@ export function parseTRPCRouter(
             let mergedSchema = item._def.inputs[0];
 
             for (let i = 1; i < item._def.inputs.length; i++) {
-              if (typeof mergedSchema.merge === "function") {
-                mergedSchema = mergedSchema.merge(item._def.inputs[i]);
+              if (typeof mergedSchema.extend === "function") {
+                mergedSchema = mergedSchema.extend(item._def.inputs[i].shape);
               }
             }
 
-            // Convert merged schema to JSON Schema
-            jsonSchema = zodToJsonSchema(mergedSchema);
+            //* This works, but the merging is not working
+
+            if ("_zod" in mergedSchema) {
+              jsonSchema = z4.toJSONSchema(mergedSchema, {
+                target: "draft-7",
+              });
+            } else {
+              jsonSchema = zodToJsonSchema(mergedSchema);
+            }
           } catch (error) {
             // If merging or conversion fails, leave jsonSchema as undefined
             console.error("Error generating JSON Schema:", error);
