@@ -15,7 +15,7 @@ export type BaseNodeType = {
 /**
  * Type representing metadata that can be attached to a procedure
  */
-export type ProcedureMeta = Record<string, any>;
+export type ProcedureMeta = Record<string, string>;
 
 /**
  * Type representing any procedure (query or mutation)

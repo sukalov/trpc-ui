@@ -1,3 +1,4 @@
+import type { ParsedTRPCRouter } from "@src/parseV2/types";
 import { HeadersPopup } from "@src/react-app/components/HeadersPopup";
 import { SearchOverlay } from "@src/react-app/components/SearchInputOverlay";
 import { AllPathsContextProvider } from "@src/react-app/components/contexts/AllPathsContext";
@@ -28,7 +29,6 @@ import {
   RenderOptionsProvider,
   useRenderOptions,
 } from "./components/contexts/OptionsContext";
-import type { ParsedTRPCRouter } from "@src/parseV2/types";
 import { Container } from "./v2/Container";
 
 export function RootComponent({
@@ -87,7 +87,7 @@ function ClientProviders({
         if (options.transformer === "superjson") return superjson;
         return undefined;
       })(),
-    })
+    }),
   );
   const [queryClient] = useState(() => new QueryClient());
 
@@ -112,7 +112,7 @@ function AppInnards({
 
   const [sidebarOpen, setSidebarOpen] = useLocalStorage(
     "trpc-panel.show-minimap",
-    true
+    true,
   );
   const { openAndNavigateTo } = useSiteNavigationContext();
 
@@ -140,9 +140,9 @@ function AppInnards({
           <div className="container max-w-6xl p-4 pt-8">
             <MetaHeader meta={options.meta} />
             {/* <RouterContainer router={rootRouter} options={options} /> */}
-            <pre>{JSON.stringify(router, null, 2)}</pre>
-            {Object.entries(router).map(([_key, routerOrProcedure]) => {
-              return <Container item={routerOrProcedure} />;
+            {/* <pre>{JSON.stringify(router, null, 2)}</pre> */}
+            {Object.entries(router).map(([key, routerOrProcedure]) => {
+              return <Container item={routerOrProcedure} key={key} />;
             })}
           </div>
         </div>

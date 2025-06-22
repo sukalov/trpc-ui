@@ -1,13 +1,13 @@
 import { TRPCError } from "@trpc/server";
+import { type } from "arktype";
 import { z } from "zod";
 import { createTRPCRouter, procedure } from "~/server/api/trpc";
-import { type } from "arktype";
 
 const secondValidator = procedure
   .input(
     z.object({
       needString: z.string(),
-    })
+    }),
   )
   .use(({ ctx, next }) => {
     return next({ ctx });
@@ -18,7 +18,7 @@ const deepRouter = createTRPCRouter({
     .input(
       z.object({
         needString: z.string(),
-      })
+      }),
     )
     .query(({ input }) => ({
       data: "thing",
@@ -30,7 +30,7 @@ const anotherRouter = createTRPCRouter({
     .input(
       z.object({
         hi: z.number(),
-      })
+      }),
     )
     .query(() => ({
       data: "thing",
@@ -85,11 +85,18 @@ const postsRouter = createTRPCRouter({
     })
     .input(
       z.object({
-        text: z.string().min(1).describe("hi there"),
-        nested: z.object({
-          nestedText: z.string(),
-        }),
-      })
+        text: z.string().min(1).describe("hi there").optional(),
+        nested: z
+          .object({
+            nestedText: z.string().describe("what's happening").optional(),
+            nestedAgain: z.object({
+              nest: z.boolean().describe("cool bool"),
+            }),
+          })
+          .describe("object descriptions"),
+
+        optionalProp: z.string().optional(),
+      }),
     )
     .mutation(({ input }) => {
       return {

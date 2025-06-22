@@ -1,9 +1,9 @@
-import { zodToJsonSchema } from "zod-to-json-schema";
-import type { Type as ArkTypeValidator } from "arktype";
 import { toJsonSchema } from "@valibot/to-json-schema";
+import type { Type as ArkTypeValidator } from "arktype";
 import * as v from "valibot";
-import type { ParsedTRPCRouter, Router } from "./types";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import { detectValidatorType } from "./detectValidator";
+import type { ParsedTRPCRouter, Router } from "./types";
 
 export function parseRootRouter(router: any): Router {
   return parseTRPCRouter(router, []) as unknown as Router;
@@ -20,7 +20,7 @@ export function parseRootRouter(router: any): Router {
  */
 export function parseTRPCRouter(
   router: any,
-  currentPath: string[] = []
+  currentPath: string[] = [],
 ): ParsedTRPCRouter {
   // The result object we'll build up
   const result: Record<string, any> = {};
@@ -57,7 +57,7 @@ export function parseTRPCRouter(
 
         // Check if all inputs are of the same type
         const allSameType = item._def.inputs.every(
-          (input: any) => detectValidatorType(input) === firstType
+          (input: any) => detectValidatorType(input) === firstType,
         );
 
         validatorType = allSameType ? firstType : "mixed";
@@ -92,7 +92,7 @@ export function parseTRPCRouter(
           const merged = item._def.inputs.reduce(
             (merge: ArkTypeValidator, curr: ArkTypeValidator) => {
               merge.and(curr);
-            }
+            },
           );
           jsonSchema = merged.toJsonSchema();
         }

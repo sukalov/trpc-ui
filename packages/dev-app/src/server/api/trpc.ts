@@ -60,7 +60,7 @@ const t = initTRPC
   .context<typeof createTRPCContext>()
   .meta<TRPCPanelMeta>()
   .create({
-    transformer: env.NEXT_PUBLIC_SUPERJSON === "false" ? undefined : superjson,
+    // transformer: env.NEXT_PUBLIC_SUPERJSON === "false" ? undefined : superjson,
     errorFormatter({ shape, error }) {
       return {
         ...shape,
@@ -95,4 +95,17 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const procedure = t.procedure;
+
+// In your tRPC setup file
+const loggingMiddleware = t.middleware(
+  async ({ next, path, type, getRawInput }) => {
+    const rawInput = await getRawInput();
+    console.log(`🔍 [${type.toUpperCase()}] ${path}`);
+    console.log("Raw Input:", rawInput);
+    console.log("Input type:", typeof rawInput);
+    console.log("Input JSON:", JSON.stringify(rawInput, null, 2));
+    return next();
+  },
+);
+
+export const procedure = t.procedure.use(loggingMiddleware);
