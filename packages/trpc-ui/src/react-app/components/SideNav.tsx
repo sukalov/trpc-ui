@@ -3,7 +3,6 @@ import { Chevron } from "@src/react-app/components/Chevron";
 import { ItemTypeIcon } from "@src/react-app/components/ItemTypeIcon";
 import {
   collapsables,
-  useCollapsableIsShowing,
   useSiteNavigationContext,
 } from "@src/react-app/components/contexts/SiteNavigationContext";
 import { colorSchemeForNode } from "@src/react-app/components/style-utils";
@@ -35,13 +34,14 @@ function SideNavItem({
   node: ParsedRouter | ParsedProcedure;
   path: string[];
 }) {
-  const { markForScrollTo } = useSiteNavigationContext();
-  const shown = useCollapsableIsShowing(path) || path.length === 0;
+  // const { markForScrollTo } = useSiteNavigationContext();
+  // const shown = useCollapsableIsShowing(path) || path.length === 0;
+  const shown = false;
 
-  const onClick = useCallback(function onClick() {
-    collapsables.toggle(path);
-    markForScrollTo(path);
-  }, []);
+  // const onClick = useCallback(function onClick() {
+  //   collapsables.toggle(path);
+  //   markForScrollTo(path);
+  // }, []);
 
   return (
     <>

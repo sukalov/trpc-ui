@@ -1,6 +1,5 @@
 import { TRPCError } from "@trpc/server";
 import { type } from "arktype";
-import { Type } from "arktype";
 import * as v from "valibot";
 import * as z from "zod/v3";
 import * as z4 from "zod/v4";
@@ -10,6 +9,16 @@ const secondValidator = procedure
   .input(
     z.object({
       needString: z.string(),
+    }),
+  )
+  .use(({ ctx, next }) => {
+    return next({ ctx });
+  });
+
+const arktypeVal = procedure
+  .input(
+    type({
+      name: "string",
     }),
   )
   .use(({ ctx, next }) => {
@@ -82,7 +91,7 @@ const postsRouter = createTRPCRouter({
   //       },
   //     ];
   //   }),
-  createPost: secondValidator
+  createPostZodThree: secondValidator
     .meta({
       description: "hi",
     })
@@ -106,43 +115,48 @@ const postsRouter = createTRPCRouter({
         ...input,
       };
     }),
-  createPost2: secondValidator
-    .meta({
-      schema:
-        // biome-ignore lint/style/useTemplate: <explanation>
-        "```" +
-        JSON.stringify(
-          z4.toJSONSchema(
-            z4.object({
-              text: z4.string().min(1).describe("hi there").optional(),
-            }),
-            {
-              target: "draft-7",
-            },
-          ),
-        ) +
-        "```",
-    })
-    .input(
-      z4.object({
-        text: z4.string().min(1).describe("hi there").optional(),
-        nested: z4
-          .object({
-            nestedText: z4.string().describe("what's happening").optional(),
-            nestedAgain: z4.object({
-              nest: z4.boolean().describe("cool bool"),
-            }),
-          })
-          .describe("object descriptions"),
+  // createPostArkType: procedure
+  //   .input(type({ age: "string" }))
+  //   .query(({ input }) => {
+  //     return input;
+  //   }),
+  // createPost2: secondValidator
+  //   .meta({
+  //     schema:
+  //       // biome-ignore lint/style/useTemplate: <explanation>
+  //       "```" +
+  //       JSON.stringify(
+  //         z4.toJSONSchema(
+  //           z4.object({
+  //             text: z4.string().min(1).describe("hi there").optional(),
+  //           }),
+  //           {
+  //             target: "draft-7",
+  //           },
+  //         ),
+  //       ) +
+  //       "```",
+  //   })
+  //   .input(
+  //     z4.object({
+  //       text: z4.string().min(1).describe("hi there").optional(),
+  //       nested: z4
+  //         .object({
+  //           nestedText: z4.string().describe("what's happening").optional(),
+  //           nestedAgain: z4.object({
+  //             nest: z4.boolean().describe("cool bool"),
+  //           }),
+  //         })
+  //         .describe("object descriptions"),
 
-        optionalProp: z4.string().optional(),
-      }),
-    )
-    .mutation(({ input }) => {
-      return {
-        ...input,
-      };
-    }),
+  //       optionalProp: z4.string().optional(),
+  //     }),
+  //   )
+  //   .mutation(({ input }) => {
+  //     return {
+  //       ...input,
+  //     };
+  //   }),
   deep: deepRouter,
   // dateTest: procedure
   //   .input(

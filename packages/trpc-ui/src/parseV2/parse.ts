@@ -78,14 +78,15 @@ export function parseTRPCRouter(
             }
 
             //* This works, but the merging is not working
+            jsonSchema = zodToJsonSchema(mergedSchema);
 
-            if ("_zod" in mergedSchema) {
-              jsonSchema = z4.toJSONSchema(mergedSchema, {
-                target: "draft-7",
-              });
-            } else {
-              jsonSchema = zodToJsonSchema(mergedSchema);
-            }
+            // if ("_zod" in mergedSchema) {
+            //   jsonSchema = z4.toJSONSchema(mergedSchema, {
+            //     target: "draft-7",
+            //   });
+            // } else {
+            //   jsonSchema = zodToJsonSchema(mergedSchema);
+            // }
           } catch (error) {
             // If merging or conversion fails, leave jsonSchema as undefined
             console.error("Error generating JSON Schema:", error);
@@ -99,12 +100,14 @@ export function parseTRPCRouter(
             console.error("Error generating JSON Schema:", error);
           }
         } else if (validatorType === "arktype") {
-          const merged = item._def.inputs.reduce(
-            (merge: ArkTypeValidator, curr: ArkTypeValidator) => {
-              merge.and(curr);
-            },
-          );
-          jsonSchema = merged.toJsonSchema();
+          console.log("arktype");
+          // const merged = item._def.inputs.reduce(
+          //   (merge: ArkTypeValidator, curr: ArkTypeValidator) => {
+          //     merge.and(curr);
+          //   },
+          // );
+          // jsonSchema = merged.toJsonSchema();
+          jsonSchema = item._def.inputs.toJSONSchema();
         }
       }
 

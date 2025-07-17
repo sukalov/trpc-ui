@@ -91,12 +91,12 @@ export const collapsables = (() => {
   };
 })();
 
-export function useCollapsableIsShowing(path: string[]) {
-  const p = useMemo(() => {
-    return path.join(".");
-  }, []);
-  return collapsablesStore.current?.((s) => (s as any)[p]);
-}
+// export function useCollapsableIsShowing(path: string[]) {
+//   const p = useMemo(() => {
+//     return path.join(".");
+//   }, []);
+//   return collapsablesStore.current?.((s) => (s as any)[p]);
+// }
 
 export function SiteNavigationContextProvider({
   children,

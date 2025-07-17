@@ -6,7 +6,6 @@ import {
   materialCells,
   materialRenderers,
 } from "@jsonforms/material-renderers";
-import { JsonViewer } from "@textea/json-viewer";
 import Editor from "@monaco-editor/react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -18,17 +17,18 @@ import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
+import { JsonViewer } from "@textea/json-viewer";
 
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import ClearIcon from "@mui/icons-material/Clear";
 // Icons
 import SendIcon from "@mui/icons-material/Send";
-import ClearIcon from "@mui/icons-material/Clear";
-import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
-import { useState } from "react";
+import { createProcedureFetcher } from "@src/parseV2/fetcher";
 import { sample } from "@stoplight/json-schema-sampler";
 import prettyBytes from "pretty-bytes";
 import prettyMs from "pretty-ms";
-import { createProcedureFetcher } from "@src/parseV2/fetcher";
+import { useState } from "react";
 import { DocumentationSection } from "./DocumentationSection";
 
 interface TabPanelProps {
@@ -61,7 +61,7 @@ function a11yProps(index: number) {
 }
 
 const fetcher = createProcedureFetcher({
-  baseUrl: "http://localhost:3001/api/trpc",
+  baseUrl: "http://localhost:3000/api/trpc",
 });
 
 export function Form({ procedure }: { procedure: Procedure }) {
@@ -78,7 +78,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
-  
+
   const handleEditorChange = (value: string | undefined) => {
     try {
       const parsedData = JSON.parse(value ?? "{}");
@@ -90,7 +90,6 @@ export function Form({ procedure }: { procedure: Procedure }) {
 
   const handleClear = () => {
     setData({});
-    // Don't clear the response
   };
 
   const handleAutofill = () => {
@@ -106,19 +105,19 @@ export function Form({ procedure }: { procedure: Procedure }) {
 
   const handleSend = async () => {
     if (!procedure) return;
-    
+
     setLoading(true);
     const startTime = Date.now();
-    
+
     try {
       const result = await fetcher(procedure, {
         input: data,
       });
-      
+
       const endTime = Date.now();
       const responseTime = endTime - startTime;
       const responseSize = JSON.stringify(result).length;
-      
+
       setResponse({
         data: result,
         time: responseTime,
@@ -132,7 +131,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
       setLoading(false);
     }
   };
-  
+
   if (!procedure.schema) {
     return "No Schema";
   }
@@ -140,10 +139,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
   return (
     <div className="m-2 bg-white">
       {/* Documentation Section */}
-      <DocumentationSection 
-        meta={procedure.meta} 
-        schema={procedure.schema}
-      />
+      <DocumentationSection meta={procedure.meta} schema={procedure.schema} />
 
       {/* Input Section */}
       <Paper elevation={2} sx={{ mb: 2 }}>
@@ -159,30 +155,38 @@ export function Form({ procedure }: { procedure: Procedure }) {
             </Tabs>
           </Box>
           <CustomTabPanel value={tabValue} index={0}>
-              <JsonForms
-                schema={procedure.schema}
-                data={data}
-                renderers={materialRenderers}
-                cells={materialCells}
-                onChange={({ data }) => setData(data)}
-              />
+            <JsonForms
+              schema={procedure.schema}
+              data={data}
+              renderers={materialRenderers}
+              cells={materialCells}
+              onChange={({ data }) => setData(data)}
+            />
           </CustomTabPanel>
           <CustomTabPanel value={tabValue} index={1}>
-              <Editor
-                defaultLanguage="json"
-                options={{
-                  minimap: {
-                    enabled: false,
-                  },
-                  formatOnType: true,
-                }}
-                height={"25vh"}
-                value={JSON.stringify(data, null, 2)}
-                onChange={handleEditorChange}
-              />
+            <Editor
+              defaultLanguage="json"
+              options={{
+                minimap: {
+                  enabled: false,
+                },
+                formatOnType: true,
+              }}
+              height={"25vh"}
+              value={JSON.stringify(data, null, 2)}
+              onChange={handleEditorChange}
+            />
           </CustomTabPanel>
-          
-          <Box sx={{ px: 2, pb: 1.5, pt: 0.5, display: 'flex', justifyContent: 'space-between' }}>
+
+          <Box
+            sx={{
+              px: 2,
+              pb: 1.5,
+              pt: 0.5,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <ButtonGroup variant="outlined" size="small">
               <Button
                 onClick={handleClear}
@@ -199,13 +203,15 @@ export function Form({ procedure }: { procedure: Procedure }) {
                 Autofill
               </Button>
             </ButtonGroup>
-            
+
             <Button
               variant="contained"
               color="primary"
               size="small"
               onClick={handleSend}
-              startIcon={loading ? <CircularProgress size={16} /> : <SendIcon />}
+              startIcon={
+                loading ? <CircularProgress size={16} /> : <SendIcon />
+              }
               disabled={loading}
             >
               Send
@@ -213,49 +219,49 @@ export function Form({ procedure }: { procedure: Procedure }) {
           </Box>
         </Box>
       </Paper>
-      
+
       {/* Response Section */}
       {response && (
         <Paper elevation={2}>
-          <Box 
-            sx={{ 
-              px: 2, 
-              py: 1, 
-              borderBottom: 1, 
-              borderColor: 'divider',
-              display: 'flex',
-              alignItems: 'center'
+          <Box
+            sx={{
+              px: 2,
+              py: 1,
+              borderBottom: 1,
+              borderColor: "divider",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <Typography 
-              variant="body2" 
-              component="div" 
-              sx={{ 
-                fontWeight: 500, 
-                color: response.error ? "error.main" : "text.secondary" 
+            <Typography
+              variant="body2"
+              component="div"
+              sx={{
+                fontWeight: 500,
+                color: response.error ? "error.main" : "text.secondary",
               }}
             >
-              {response.error 
-                ? "Error" 
-                : `Response ${response.size ? `(${prettyBytes(response.size)})` : ''} ${response.time ? `(${prettyMs(response.time)})` : ''}`}
+              {response.error
+                ? "Error"
+                : `Response ${response.size ? `(${prettyBytes(response.size)})` : ""} ${response.time ? `(${prettyMs(response.time)})` : ""}`}
             </Typography>
           </Box>
-          
+
           {response.error ? (
             <Box sx={{ p: 1.5 }}>
               <Typography color="error.main" variant="body2">
                 {response.error.message || "Unknown error occurred"}
               </Typography>
               {response.error.stack && (
-                <Box 
-                  sx={{ 
-                    mt: 1.5, 
-                    p: 1.5, 
-                    bgcolor: 'rgba(0, 0, 0, 0.03)', 
-                    borderRadius: 1, 
-                    overflow: 'auto',
-                    fontFamily: 'monospace',
-                    fontSize: '0.75rem'
+                <Box
+                  sx={{
+                    mt: 1.5,
+                    p: 1.5,
+                    bgcolor: "rgba(0, 0, 0, 0.03)",
+                    borderRadius: 1,
+                    overflow: "auto",
+                    fontFamily: "monospace",
+                    fontSize: "0.75rem",
                   }}
                 >
                   <pre>{response.error.stack}</pre>
@@ -264,9 +270,9 @@ export function Form({ procedure }: { procedure: Procedure }) {
             </Box>
           ) : (
             <Box sx={{ p: 1.5 }}>
-              <JsonViewer 
-                rootName={false} 
-                value={response.data} 
+              <JsonViewer
+                rootName={false}
+                value={response.data}
                 quotesOnKeys={false}
                 displayDataTypes={false}
                 displaySize={false}

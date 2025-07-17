@@ -8,7 +8,7 @@ import {
 } from "@src/react-app/components/contexts/HeadersContext";
 import { HotKeysContextProvider } from "@src/react-app/components/contexts/HotKeysContext";
 import { SiteNavigationContextProvider } from "@src/react-app/components/contexts/SiteNavigationContext";
-import { useSiteNavigationContext } from "@src/react-app/components/contexts/SiteNavigationContext";
+
 import { useLocalStorage } from "@src/react-app/components/hooks/useLocalStorage";
 import type { RenderOptions } from "@src/render";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -37,8 +37,8 @@ export function RootComponent({
   options,
   trpc,
 }: {
-  rootRouter: ParsedRouter;
-  parsedRouter: ParsedTRPCRouter;
+  rootRouter: ParsedRouter; // The old one
+  parsedRouter: ParsedTRPCRouter; // The new one
   options: RenderOptions;
   trpc: ReturnType<typeof createTRPCReact>;
 }) {
@@ -46,58 +46,20 @@ export function RootComponent({
     <NuqsAdapter>
       <HeadersContextProvider>
         <AllPathsContextProvider rootRouter={rootRouter}>
-          <SiteNavigationContextProvider>
-            <ClientProviders trpc={trpc} options={options}>
-              <HotKeysContextProvider>
-                <RenderOptionsProvider options={options} router={parsedRouter}>
-                  <SearchOverlay>
-                    <div className="relative flex h-full w-full flex-1 flex-col">
-                      <AppInnards rootRouter={rootRouter} options={options} />
-                    </div>
-                  </SearchOverlay>
-                </RenderOptionsProvider>
-              </HotKeysContextProvider>
-            </ClientProviders>
-          </SiteNavigationContextProvider>
+          {/* <SiteNavigationContextProvider> */}
+          <HotKeysContextProvider>
+            <RenderOptionsProvider options={options} router={parsedRouter}>
+              {/* <SearchOverlay> */}
+              <div className="relative flex h-full w-full flex-1 flex-col">
+                <AppInnards rootRouter={rootRouter} options={options} />
+              </div>
+              {/* </SearchOverlay> */}
+            </RenderOptionsProvider>
+          </HotKeysContextProvider>
+          {/* </SiteNavigationContextProvider> */}
         </AllPathsContextProvider>
       </HeadersContextProvider>
     </NuqsAdapter>
-  );
-}
-
-function ClientProviders({
-  trpc,
-  children,
-  options,
-}: {
-  trpc: ReturnType<typeof createTRPCReact>;
-  children: ReactNode;
-  options: RenderOptions;
-}) {
-  const headers = useHeaders();
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: options.url,
-          headers: headers.getHeaders,
-        }),
-      ],
-      transformer: (() => {
-        if (options.transformer === "superjson") return superjson;
-        return undefined;
-      })(),
-    }),
-  );
-  const [queryClient] = useState(() => new QueryClient());
-
-  return (
-    <trpc.Provider queryClient={queryClient} client={trpcClient}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-      </QueryClientProvider>
-    </trpc.Provider>
   );
 }
 
@@ -114,23 +76,23 @@ function AppInnards({
     "trpc-panel.show-minimap",
     true,
   );
-  const { openAndNavigateTo } = useSiteNavigationContext();
+  // const { openAndNavigateTo } = useSiteNavigationContext();
 
   const [path] = useQueryState("path", parseAsArrayOf(parseAsString, "."));
 
-  useEffect(() => {
-    openAndNavigateTo(path ?? [], true);
-  }, []);
+  // useEffect(() => {
+  //   openAndNavigateTo(path ?? [], true);
+  // }, []);
 
   return (
     <div className="relative flex flex-1 flex-col">
       <TopBar open={sidebarOpen} setOpen={setSidebarOpen} />
       <div className="flex flex-1 flex-row bg-mainBackground">
-        <SideNav
+        {/* <SideNav
           rootRouter={rootRouter}
           open={sidebarOpen}
           setOpen={setSidebarOpen}
-        />
+        /> */}
         <div
           className="flex flex-1 flex-col items-center overflow-scroll"
           style={{
