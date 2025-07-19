@@ -1,7 +1,10 @@
 import type { ParsedTRPCRouter } from "@src/parseV2/types";
 import { HeadersPopup } from "@src/react-app/components/HeadersPopup";
 import { SearchOverlay } from "@src/react-app/components/SearchInputOverlay";
-import { AllPathsContextProvider } from "@src/react-app/components/contexts/AllPathsContext";
+import {
+  AllPathsContextProvider,
+  useAllPaths,
+} from "@src/react-app/components/contexts/AllPathsContext";
 import {
   HeadersContextProvider,
   useHeaders,
@@ -38,14 +41,14 @@ export function RootComponent({
   trpc,
 }: {
   rootRouter: ParsedRouter; // The old one
-  parsedRouter: ParsedTRPCRouter; // The new one
+  parsedRouter: ParsedTRPCRouter; //* The new one
   options: RenderOptions;
   trpc: ReturnType<typeof createTRPCReact>;
 }) {
   return (
     <NuqsAdapter>
       <HeadersContextProvider>
-        <AllPathsContextProvider rootRouter={rootRouter}>
+        <AllPathsContextProvider parsedRouter={parsedRouter}>
           {/* <SiteNavigationContextProvider> */}
           <HotKeysContextProvider>
             <RenderOptionsProvider options={options} router={parsedRouter}>
@@ -83,6 +86,7 @@ function AppInnards({
   // useEffect(() => {
   //   openAndNavigateTo(path ?? [], true);
   // }, []);
+  const allPaths = useAllPaths();
 
   return (
     <div className="relative flex flex-1 flex-col">
@@ -101,6 +105,7 @@ function AppInnards({
         >
           <div className="container max-w-6xl p-4 pt-8">
             <MetaHeader meta={options.meta} />
+            <pre>{JSON.stringify(allPaths, null, 2)}</pre>
             {/* <RouterContainer router={rootRouter} options={options} /> */}
             {/* <pre>{JSON.stringify(router, null, 2)}</pre> */}
             {Object.entries(router).map(([key, routerOrProcedure]) => {

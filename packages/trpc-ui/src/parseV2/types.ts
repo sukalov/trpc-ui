@@ -35,6 +35,8 @@ export type Router = BaseNodeType & {
   children: ParsedTRPCRouter;
 };
 
+export type RouterOrProcedure = Router | Procedure;
+
 /**
  * Type representing the output of the parseTRPCRouter function
  */
