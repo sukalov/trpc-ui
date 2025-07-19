@@ -15,6 +15,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import { useSiteNavigationContext } from "@src/react-app/components/contexts/SiteNavigationContext";
 
 export type ColorSchemeType =
   | "query"
@@ -37,26 +38,26 @@ export function CollapsableSection({
   isRoot?: boolean;
   focusOnScrollRef?: MutableRefObject<HTMLFormElement | null>;
 }) {
-  // const { scrollToPathIfMatches } = useSiteNavigationContext();
+  const { scrollToPathIfMatches } = useSiteNavigationContext();
   const shown = useCollapsableIsShowing(fullPath);
-  const [_path, setPath] = useQueryState("path");
+  const [path, setPath] = useQueryState("path");
 
   const containerRef = useRef<HTMLDivElement | null>(null);
-  // useEffect(() => {
-  //   if (shown && containerRef.current) {
-  //     if (scrollToPathIfMatches(fullPath, containerRef.current)) {
-  //       // timeout or it'll immediately submit the form (which shows error messages)
-  //       const firstChild =
-  //         focusOnScrollRef?.current &&
-  //         findFirstFormChildInput(focusOnScrollRef.current);
-  //       if (firstChild) {
-  //         setTimeout(() => {
-  //           firstChild.focus({ preventScroll: true });
-  //         }, 0);
-  //       }
-  //     }
-  //   }
-  // }, [shown]);
+  useEffect(() => {
+    if (shown && containerRef.current) {
+      if (scrollToPathIfMatches(fullPath, containerRef.current)) {
+        // timeout or it'll immediately submit the form (which shows error messages)
+        const firstChild =
+          focusOnScrollRef?.current &&
+          findFirstFormChildInput(focusOnScrollRef.current);
+        if (firstChild) {
+          setTimeout(() => {
+            firstChild.focus({ preventScroll: true });
+          }, 0);
+        }
+      }
+    }
+  }, [shown]);
 
   // deals with root router. If it's not collapsable we **simply** render the title element and children
   const collapsable = fullPath.length > 0;
@@ -74,11 +75,11 @@ export function CollapsableSection({
           type="button"
           onClick={() => {
             collapsables.toggle(fullPath);
-            // if (shown) {
-            //   setPath(null);
-            // } else {
-            //   setPath(fullPath.join("."));
-            // }
+            if (shown) {
+              setPath(null);
+            } else {
+              setPath(fullPath.join("."));
+            }
           }}
           className="flex flex-row items-center justify-between p-1 "
         >

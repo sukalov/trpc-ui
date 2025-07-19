@@ -49,17 +49,17 @@ export function RootComponent({
     <NuqsAdapter>
       <HeadersContextProvider>
         <AllPathsContextProvider parsedRouter={parsedRouter}>
-          {/* <SiteNavigationContextProvider> */}
-          <HotKeysContextProvider>
-            <RenderOptionsProvider options={options} router={parsedRouter}>
-              {/* <SearchOverlay> */}
-              <div className="relative flex h-full w-full flex-1 flex-col">
-                <AppInnards rootRouter={rootRouter} options={options} />
-              </div>
-              {/* </SearchOverlay> */}
-            </RenderOptionsProvider>
-          </HotKeysContextProvider>
-          {/* </SiteNavigationContextProvider> */}
+          <SiteNavigationContextProvider>
+            <HotKeysContextProvider>
+              <RenderOptionsProvider options={options} router={parsedRouter}>
+                {/* <SearchOverlay> */}
+                <div className="relative flex h-full w-full flex-1 flex-col">
+                  <AppInnards rootRouter={rootRouter} options={options} />
+                </div>
+                {/* </SearchOverlay> */}
+              </RenderOptionsProvider>
+            </HotKeysContextProvider>
+          </SiteNavigationContextProvider>
         </AllPathsContextProvider>
       </HeadersContextProvider>
     </NuqsAdapter>

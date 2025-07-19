@@ -44,6 +44,7 @@ function initCollapsablesStore(allPaths: string[]) {
 
 export const collapsables = (() => {
   const hide = (path: string[]) => {
+    if (!collapsablesStore) return;
     const pathJoined = path.join(".");
     forAllPaths(path, (current) => {
       if (pathJoined.length <= current.length) {
@@ -54,6 +55,7 @@ export const collapsables = (() => {
     });
   };
   const show = (path: string[]) => {
+    if (!collapsablesStore) return;
     forAllPaths(path, (current) => {
       collapsablesStore.setState({
         [current]: true,
@@ -64,6 +66,7 @@ export const collapsables = (() => {
     hide,
     show,
     toggle(path: string[]) {
+      if (!collapsablesStore) return;
       const state = collapsablesStore.getState();
       if (state[path.join(".")]) {
         hide(path);
@@ -72,6 +75,7 @@ export const collapsables = (() => {
       }
     },
     hideAll() {
+      if (!collapsablesStore) return;
       const state = collapsablesStore.getState();
       const newValue: CollapsibleState = {};
       for (const pathKey in state) {
@@ -84,6 +88,9 @@ export const collapsables = (() => {
 
 export function useCollapsableIsShowing(path: string[]): boolean {
   const pathKey = useMemo(() => path.join("."), [path]);
+  if (!collapsablesStore) {
+    return false;
+  }
   return collapsablesStore((state) => state[pathKey] ?? false);
 }
 
