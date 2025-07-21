@@ -115,11 +115,11 @@ const postsRouter = createTRPCRouter({
         ...input,
       };
     }),
-  // createPostArkType: procedure
-  //   .input(type({ age: "string" }))
-  //   .query(({ input }) => {
-  //     return input;
-  //   }),
+  createPostArkType: arktypeVal
+    .input(type({ age: "string" }))
+    .query(({ input }) => {
+      return input;
+    }),
   // createPost2: secondValidator
   //   .meta({
   //     schema:

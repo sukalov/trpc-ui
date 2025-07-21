@@ -1,12 +1,12 @@
 import { toJsonSchema } from "@valibot/to-json-schema";
 import type { Type as ArkTypeValidator } from "arktype";
-import { mergeConfigs } from "tailwind-merge";
 import * as v from "valibot";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import * as z3 from "zod/v3";
 import * as z4 from "zod/v4";
 import { detectValidatorType } from "./detectValidator";
 import type { ParsedTRPCRouter, Router } from "./types";
+import type { JSONSchema7Object } from "json-schema";
 
 export function parseRootRouter(router: any): Router {
   return parseTRPCRouter(router, []) as unknown as Router;
@@ -101,13 +101,15 @@ export function parseTRPCRouter(
           }
         } else if (validatorType === "arktype") {
           console.log("arktype");
+          console.log(item._def.inputs);
+          jsonSchema = arkToJson(item._def.inputs);
           // const merged = item._def.inputs.reduce(
           //   (merge: ArkTypeValidator, curr: ArkTypeValidator) => {
           //     merge.and(curr);
           //   },
           // );
           // jsonSchema = merged.toJsonSchema();
-          jsonSchema = item._def.inputs.toJSONSchema();
+          // jsonSchema = item._def.inputs.toJSONSchema();
         }
       }
 
@@ -146,4 +148,25 @@ export function parseTRPCRouter(
   }
 
   return result;
+}
+
+function arkToJson(inputs: ArkTypeValidator[]): JSONSchema7Object {
+  if (inputs.length === 1) {
+    return inputs[0]?.toJsonSchema();
+  }
+  if (inputs.length > 1) {
+    const [first, ...rest] = inputs;
+    return arkRecursive(first, rest);
+  }
+  return {};
+}
+function arkRecursive(
+  base: ArkTypeValidator,
+  rest: ArkTypeValidator[],
+): JSONSchema7Object {
+  if (rest.length === 0) {
+    return base.toJsonSchema();
+  }
+  const [first, ...left] = rest;
+  return arkRecursive(base.and(first), left);
 }

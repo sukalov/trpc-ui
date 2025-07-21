@@ -38,15 +38,11 @@ import {
 import { Container } from "./v2/Container";
 
 export function RootComponent({
-  rootRouter,
   parsedRouter,
   options,
-  trpc,
 }: {
-  rootRouter: ParsedRouter; // The old one
   parsedRouter: ParsedTRPCRouter; //* The new one
   options: RenderOptions;
-  trpc: ReturnType<typeof createTRPCReact>;
 }) {
   return (
     <NuqsAdapter>
@@ -57,11 +53,7 @@ export function RootComponent({
               <RenderOptionsProvider options={options} router={parsedRouter}>
                 <SearchOverlay>
                   <div className="relative flex h-full w-full flex-1 flex-col">
-                    <AppInnards
-                      rootRouter={rootRouter}
-                      options={options}
-                      parsedRouter={parsedRouter}
-                    />
+                    <AppInnards options={options} parsedRouter={parsedRouter} />
                   </div>
                 </SearchOverlay>
               </RenderOptionsProvider>
@@ -74,11 +66,9 @@ export function RootComponent({
 }
 
 function AppInnards({
-  rootRouter,
   options,
   parsedRouter,
 }: {
-  rootRouter: ParsedRouter;
   parsedRouter: ParsedTRPCRouter;
   options: RenderOptions;
 }) {
