@@ -48,7 +48,7 @@ function SearchInput() {
   const searchText = useSearch((s) => s.searchText);
   const setSearchText = useSearch((s) => s.setSearchText);
   const finish = useSearch((s) => s.finish);
-  // const { openAndNavigateTo } = useSiteNavigationContext();
+  const { openAndNavigateTo } = useSiteNavigationContext();
   const paths = useAllPaths();
   const results = useFuzzySort({
     paths: paths.pathsArray,
@@ -128,7 +128,7 @@ function SearchInput() {
   function pathSelectedHandler(index: number) {
     const selected = results[index];
     if (!selected) return;
-    // openAndNavigateTo(selected.target.split("."), true);
+    openAndNavigateTo(selected.target.split("."), true);
     finish();
   }
 

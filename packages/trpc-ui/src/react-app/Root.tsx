@@ -10,7 +10,10 @@ import {
   useHeaders,
 } from "@src/react-app/components/contexts/HeadersContext";
 import { HotKeysContextProvider } from "@src/react-app/components/contexts/HotKeysContext";
-import { SiteNavigationContextProvider } from "@src/react-app/components/contexts/SiteNavigationContext";
+import {
+  SiteNavigationContextProvider,
+  useSiteNavigationContext,
+} from "@src/react-app/components/contexts/SiteNavigationContext";
 
 import { useLocalStorage } from "@src/react-app/components/hooks/useLocalStorage";
 import type { RenderOptions } from "@src/render";
@@ -52,11 +55,15 @@ export function RootComponent({
           <SiteNavigationContextProvider>
             <HotKeysContextProvider>
               <RenderOptionsProvider options={options} router={parsedRouter}>
-                {/* <SearchOverlay> */}
-                <div className="relative flex h-full w-full flex-1 flex-col">
-                  <AppInnards rootRouter={rootRouter} options={options} />
-                </div>
-                {/* </SearchOverlay> */}
+                <SearchOverlay>
+                  <div className="relative flex h-full w-full flex-1 flex-col">
+                    <AppInnards
+                      rootRouter={rootRouter}
+                      options={options}
+                      parsedRouter={parsedRouter}
+                    />
+                  </div>
+                </SearchOverlay>
               </RenderOptionsProvider>
             </HotKeysContextProvider>
           </SiteNavigationContextProvider>
@@ -69,8 +76,10 @@ export function RootComponent({
 function AppInnards({
   rootRouter,
   options,
+  parsedRouter,
 }: {
   rootRouter: ParsedRouter;
+  parsedRouter: ParsedTRPCRouter;
   options: RenderOptions;
 }) {
   const { router } = useRenderOptions();
@@ -79,24 +88,24 @@ function AppInnards({
     "trpc-panel.show-minimap",
     true,
   );
-  // const { openAndNavigateTo } = useSiteNavigationContext();
+  const { openAndNavigateTo } = useSiteNavigationContext();
 
   const [path] = useQueryState("path", parseAsArrayOf(parseAsString, "."));
 
-  // useEffect(() => {
-  //   openAndNavigateTo(path ?? [], true);
-  // }, []);
+  useEffect(() => {
+    openAndNavigateTo(path ?? [], true);
+  }, []);
   const allPaths = useAllPaths();
 
   return (
     <div className="relative flex flex-1 flex-col">
       <TopBar open={sidebarOpen} setOpen={setSidebarOpen} />
       <div className="flex flex-1 flex-row bg-mainBackground">
-        {/* <SideNav
-          rootRouter={rootRouter}
+        <SideNav
           open={sidebarOpen}
           setOpen={setSidebarOpen}
-        /> */}
+          parsedRoouter={parsedRouter}
+        />
         <div
           className="flex flex-1 flex-col items-center overflow-scroll"
           style={{
