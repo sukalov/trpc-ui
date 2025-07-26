@@ -5,7 +5,6 @@ import { RootComponent } from "trpc-ui/react-app/Root";
 import { trpc } from "trpc-ui/react-app/trpc";
 import { env } from "~/env.mjs";
 import { appRouter } from "~/router";
-// https://jsonforms.io/docs/
 
 console.log(`Using superjson: ${env.NEXT_PUBLIC_SUPERJSON}`);
 // const parse = parseRouterWithOptions(appRouter, {
@@ -20,7 +19,7 @@ const App = dynamic(
       parsedRouter={parseV2}
       // rootRouter={parse}
       options={{
-        url: "http://localhost:3000/api/trpc",
+        url: `http://localhost:${env.NEXT_PUBLIC_PORT}/api/trpc`,
         transformer:
           env.NEXT_PUBLIC_SUPERJSON === "false" ? undefined : "superjson",
         meta: {
@@ -28,7 +27,6 @@ const App = dynamic(
           description: "Hi there cool boi",
         },
       }}
-      // trpc={trpc}
     />
   )),
   { ssr: false },

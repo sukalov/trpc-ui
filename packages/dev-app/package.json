@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "if [ -f .env ]; then export $(grep -v '^#' .env | xargs); fi && PORT=${PORT:-3000} && echo \"Starting dev server on port $PORT\" && next dev --port=$PORT",
     "lint": "next lint",
     "start": "next start"
   },
