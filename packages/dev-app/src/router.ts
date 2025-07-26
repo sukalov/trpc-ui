@@ -179,6 +179,8 @@ const postsRouter = createTRPCRouter({
         data: input,
       };
     }),
+
+  //! This breaks, but I think it is an issue with json schema features maybe not being supported?
   mergedArktypeProcedure: arktypeVal
     .input(
       type({
@@ -192,14 +194,14 @@ const postsRouter = createTRPCRouter({
         result: input,
       };
     }),
-  // mergedValibot: valibotMiddleware
-  //   .input(v.object({ name: v.string() }))
-  //   .mutation(({ input }) => {
-  //     return {
-  //       success: true,
-  //       user: input,
-  //     };
-  //   }),
+  mergedValibot: valibotMiddleware
+    .input(v.object({ name: v.string() }))
+    .mutation(({ input }) => {
+      return {
+        success: true,
+        user: input,
+      };
+    }),
 
   deep: deepRouter,
 });

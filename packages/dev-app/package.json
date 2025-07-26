@@ -27,7 +27,7 @@
     "@valibot/to-json-schema": "1.0.0-rc.0",
     "arktype": "^2.1.9",
     "autoprefixer": "^10.4.14",
-    "next": "^13.2.4",
+    "next": "^15.4.4",
     "next-transpile-modules": "^10.0.0",
     "postcss": "^8.4.21",
     "react": "18.2.0",
