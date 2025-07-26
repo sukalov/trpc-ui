@@ -29,6 +29,7 @@ import { sample } from "@stoplight/json-schema-sampler";
 import prettyBytes from "pretty-bytes";
 import prettyMs from "pretty-ms";
 import { useState } from "react";
+import { useRenderOptions } from "../components/contexts/OptionsContext";
 import { DocumentationSection } from "./DocumentationSection";
 
 interface TabPanelProps {
@@ -60,11 +61,8 @@ function a11yProps(index: number) {
   };
 }
 
-const fetcher = createProcedureFetcher({
-  baseUrl: "http://localhost:3000/api/trpc",
-});
-
 export function Form({ procedure }: { procedure: Procedure }) {
+  const { options } = useRenderOptions();
   const [data, setData] = useState<object>({});
   const [tabValue, setTabValue] = React.useState(0);
   const [loading, setLoading] = useState(false);
@@ -74,6 +72,10 @@ export function Form({ procedure }: { procedure: Procedure }) {
     time?: number;
     size?: number;
   } | null>(null);
+
+  const fetcher = createProcedureFetcher({
+    baseUrl: options.url,
+  });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);

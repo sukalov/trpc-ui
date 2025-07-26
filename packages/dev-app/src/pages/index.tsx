@@ -19,12 +19,11 @@ const App = dynamic(
       parsedRouter={parseV2}
       // rootRouter={parse}
       options={{
-        url: `http://localhost:${env.NEXT_PUBLIC_PORT}/api/trpc`,
-        transformer:
-          env.NEXT_PUBLIC_SUPERJSON === "false" ? undefined : "superjson",
+        url: `http://localhost:${String(env.NEXT_PUBLIC_PORT)}/api/trpc`,
+        transformer: undefined,
         meta: {
           title: "Dev App Title",
-          description: "Hi there cool boi",
+          description: `http://localhost:${String(env.NEXT_PUBLIC_PORT)}/api/trpc`,
         },
       }}
     />

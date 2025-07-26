@@ -16,6 +16,7 @@ const server = z.object({
  */
 const client = z.object({
   NEXT_PUBLIC_SUPERJSON: z.enum(["true", "false"]).optional(),
+  NEXT_PUBLIC_PORT: z.coerce.number().default(3000),
 });
 
 /**
@@ -27,7 +28,7 @@ const client = z.object({
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_SUPERJSON: process.env.NEXT_PUBLIC_SUPERJSON,
-  NEXT_PUBLIC_PORT: process.env.PORT,
+  NEXT_PUBLIC_PORT: process.env.NEXT_PUBLIC_PORT,
 };
 
 // Don't touch the part below

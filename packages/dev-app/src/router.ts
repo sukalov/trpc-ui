@@ -1,14 +1,24 @@
 import { TRPCError } from "@trpc/server";
 import { type } from "arktype";
 import * as v from "valibot";
-import * as z from "zod/v3";
+import * as z3 from "zod/v3";
 import * as z4 from "zod/v4";
 import { createTRPCRouter, procedure } from "~/server/api/trpc";
 
-const secondValidator = procedure
+const zod3Middleware = procedure
   .input(
-    z.object({
-      needString: z.string(),
+    z3.object({
+      needString: z3.string(),
+    }),
+  )
+  .use(({ ctx, next }) => {
+    return next({ ctx });
+  });
+
+const zod4Middleware = procedure
+  .input(
+    z4.object({
+      needString: z4.string(),
     }),
   )
   .use(({ ctx, next }) => {
@@ -25,11 +35,17 @@ const arktypeVal = procedure
     return next({ ctx });
   });
 
+const valibotMiddleware = procedure
+  .input(v.object({ middlewareProp: v.string() }))
+  .use(({ ctx, next }) => {
+    return next({ ctx });
+  });
+
 const deepRouter = createTRPCRouter({
   coolQuery: procedure
     .input(
-      z.object({
-        needString: z.string(),
+      z3.object({
+        needString: z3.string(),
       }),
     )
     .query(({ input }) => ({
@@ -40,8 +56,8 @@ const deepRouter = createTRPCRouter({
 const anotherRouter = createTRPCRouter({
   coolQuery2: procedure
     .input(
-      z.object({
-        hi: z.number(),
+      z3.object({
+        hi: z3.number(),
       }),
     )
     .query(() => ({
@@ -50,64 +66,42 @@ const anotherRouter = createTRPCRouter({
 });
 
 const postsRouter = createTRPCRouter({
-  // complexSuperJson: procedure
-  //   .input(
-  //     z.object({
-  //       id: z.bigint(),
-  //       name: z.string(),
-  //       createdAt: z.date(),
-  //       tags: z.set(z.string()),
-  //       metadata: z.map(z.string(), z.string()),
-  //     })
-  //   )
-  //   .query(({ input }) => {
-  //     return {
-  //       message: "You used superjson!",
-  //       input: input,
-  //     };
-  //   }),
-  // meta: procedure
-  //   .meta({
-  //     description: "This is a router that contains posts",
-  //   })
-  //   .query(() => null),
-  // getAllPosts: procedure
-  //   .meta({
-  //     description: "Simple procedure that returns a list of posts",
-  //   })
-  //   .query(() => {
-  //     return [
-  //       {
-  //         id: "asodifjaosdf",
-  //         text: "Post Id",
-  //       },
-  //       {
-  //         id: "asodifjaosdf",
-  //         text: "Post Id",
-  //       },
-  //       {
-  //         id: "asodifjaosdf",
-  //         text: "Post Id",
-  //       },
-  //     ];
-  //   }),
-  createPostZodThree: secondValidator
+  getAllPosts: procedure
     .meta({
-      description: "hi",
+      description: "Simple procedure that returns a list of posts",
+    })
+    .query(() => {
+      return [
+        {
+          id: "asodifjaosdf",
+          text: "Post Id",
+        },
+        {
+          id: "asodifjaosdf2",
+          text: "Post Id 2",
+        },
+        {
+          id: "asodifjaosdf3",
+          text: "Post Id 3",
+        },
+      ];
+    }),
+  createPostZodThree: zod3Middleware
+    .meta({
+      description: "Zod v3 procedure with merged input validators",
     })
     .input(
-      z.object({
-        text: z.string().min(1).describe("hi there").optional(),
-        nested: z
+      z3.object({
+        text: z3.string().min(1).describe("hi there").optional(),
+        nested: z3
           .object({
-            nestedText: z.string().describe("what's happening").optional(),
-            nestedAgain: z.object({
-              nest: z.boolean().describe("cool bool"),
+            nestedText: z3.string().describe("what's happening").optional(),
+            nestedAgain: z3.object({
+              nest: z3.boolean().describe("cool bool"),
             }),
           })
           .describe("object descriptions"),
-
-        optionalProp: z.string().optional(),
+        optionalProp: z3.string().optional(),
       }),
     )
     .mutation(({ input }) => {
@@ -115,281 +109,104 @@ const postsRouter = createTRPCRouter({
         ...input,
       };
     }),
-  createPostArkType: arktypeVal
-    .input(type({ age: "string" }))
+  createPostZodFour: procedure
+    .input(
+      z4.object({
+        title: z4.string().min(1).describe("Post title"),
+        content: z4.string().describe("Post content"),
+      }),
+    )
+    .mutation(({ input }) => {
+      return {
+        id: "generated-id",
+        ...input,
+        createdAt: new Date().toISOString(),
+      };
+    }),
+  mergedZodFour: zod4Middleware
+    .input(
+      z4.object({
+        testNum: z4.number(),
+      }),
+    )
+    .query(({ input }) => {
+      return {
+        called: new Date().toString(),
+        ...input,
+      };
+    }),
+  basicArktype: procedure
+    .input(
+      type({
+        test: "string",
+      }),
+    )
     .query(({ input }) => {
       return input;
     }),
-  createPost2: secondValidator
-    .meta({
-      schema:
-        // biome-ignore lint/style/useTemplate: <explanation>
-        "```" +
-        JSON.stringify(
-          z4.toJSONSchema(
-            z4.object({
-              text: z4.string().min(1).describe("hi there").optional(),
-            }),
-            {
-              target: "draft-7",
-            },
-          ),
-        ) +
-        "```",
-    })
+  createPostArkType: arktypeVal
     .input(
-      z4.object({
-        text: z4.string().min(1).describe("hi there").optional(),
-        nested: z4
-          .object({
-            nestedText: z4.string().describe("what's happening").optional(),
-            nestedAgain: z4.object({
-              nest: z4.boolean().describe("cool bool"),
-            }),
-          })
-          .describe("object descriptions"),
-
-        optionalProp: z4.string().optional(),
+      type({
+        test: "string",
+        test3: "number > 5",
+      }),
+    )
+    .query(({ input }) => {
+      return {
+        message: "ArkType validation successful",
+        data: input,
+      };
+    }),
+  createPostValibot: procedure
+    .input(v.object({ name: v.string() }))
+    .mutation(({ input }) => {
+      return {
+        success: true,
+        user: input,
+      };
+    }),
+  mergedZod3Procedure: zod3Middleware
+    .input(
+      z3.object({
+        additionalField: z3
+          .string()
+          .describe("Additional field for merged validation"),
+      }),
+    )
+    .query(({ input }) => {
+      return {
+        message: "Merged Zod v3 validation",
+        data: input,
+      };
+    }),
+  mergedArktypeProcedure: arktypeVal
+    .input(
+      type({
+        category: "string",
+        priority: "'low' | 'medium' | 'high'",
       }),
     )
     .mutation(({ input }) => {
       return {
-        ...input,
+        message: "Merged ArkType validation",
+        result: input,
       };
     }),
+  // mergedValibot: valibotMiddleware
+  //   .input(v.object({ name: v.string() }))
+  //   .mutation(({ input }) => {
+  //     return {
+  //       success: true,
+  //       user: input,
+  //     };
+  //   }),
+
   deep: deepRouter,
-  // dateTest: procedure
-  //   .input(
-  //     z.object({
-  //       date: z.date(),
-  //       nested: z.object({
-  //         text: z.string(),
-  //       }),
-  //     })
-  //   )
-  //   .mutation(({ input }) => {
-  //     console.log(input);
-  //     return {
-  //       id: "aoisdjfoasidjfasodf",
-  //       time: input.date.getTime(),
-  //     };
-  //   }),
-  // createNestedPost: procedure
-  //   .input(
-  //     z.object({
-  //       text: z.string(),
-  //     })
-  //   )
-  //   .input(
-  //     z.object({
-  //       title: z.string(),
-  //     })
-  //   )
-  //   .mutation(({ input }) => {
-  //     return {
-  //       id: "aoisdjfoasidjfasodf",
-  //       text: input.text,
-  //     };
-  //   }),
 });
-const discriminatedFieldEnum = z.enum(["One", "Two"]);
 
 export const appRouter = createTRPCRouter({
   postsRouter,
   anotherRouter,
-  // inputShowcaseRouter: createTRPCRouter({
-  //   textInput: procedure
-  //     .input(z.object({ aTextInput: z.string() }))
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   numberInput: procedure
-  //     .input(z.object({ aNumberInput: z.number() }))
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   enumInput: procedure
-  //     .input(z.object({ aEnumInput: z.enum(["One", "Two"]) }))
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   nativeEnumInput: procedure
-  //     .input(z.object({ aEnumInput: z.nativeEnum({ ONE: "one", TWO: "two" }) }))
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   stringArrayInput: procedure
-  //     .input(z.object({ aStringArray: z.string().array() }))
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   objectInput: procedure
-  //     .input(
-  //       z.object({
-  //         anObject: z.object({
-  //           numberArray: z.number().array(),
-  //         }),
-  //       }),
-  //     )
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   discriminatedUnionInput: procedure
-  //     .input(
-  //       z.object({
-  //         aDiscriminatedUnion: z.discriminatedUnion("discriminatedField", [
-  //           z.object({
-  //             discriminatedField: z.literal("One"),
-  //             aFieldThatOnlyShowsWhenValueIsOne: z.string(),
-  //           }),
-  //           z.object({
-  //             discriminatedField: z.literal("Two"),
-  //             aFieldThatOnlyShowsWhenValueIsTwo: z.object({
-  //               someTextFieldInAnObject: z.string(),
-  //             }),
-  //           }),
-  //           z.object({
-  //             discriminatedField: z.literal("Three"),
-  //           }),
-  //         ]),
-  //       }),
-  //     )
-  //     .query(() => {
-  //       return "It's an input";
-  //     }),
-  //   unionInput: procedure
-  //     .input(
-  //       z.object({
-  //         aUnion: z.union([z.literal("one"), z.literal(2)]),
-  //       }),
-  //     )
-  //     .query(({ input }) => {
-  //       return input;
-  //     }),
-  //   emailTextInput: procedure
-  //     .input(
-  //       z.object({
-  //         email: z.string().email("That's an invalid email (custom message)"),
-  //       }),
-  //     )
-  //     .query(() => {
-  //       return "It's good";
-  //     }),
-  //   voidInput: procedure.input(z.void()).query(() => {
-  //     return "yep";
-  //   }),
-  // }),
-  // postSomething: procedure
-  //   .input(
-  //     z.object({
-  //       title: z.string(),
-  //       content: z.string(),
-  //     }),
-  //   )
-  //   .mutation(({ input: { title, content } }) => {
-  //     return {
-  //       title,
-  //       content,
-  //     };
-  //   }),
-  // discriminatedUnionInput: procedure
-  //   .input(
-  //     z.object({
-  //       aDiscriminatedUnion: z.discriminatedUnion("discriminatedField", [
-  //         z.object({
-  //           discriminatedField: discriminatedFieldEnum.extract(["One"]), // <-- this doesn't work
-  //           aFieldThatOnlyShowsWhenValueIsOne: z.string(),
-  //         }),
-  //         z.object({
-  //           discriminatedField: z.literal("Two"),
-  //           aFieldThatOnlyShowsWhenValueIsTwo: z.object({
-  //             someTextFieldInAnObject: z.string(),
-  //           }),
-  //         }),
-  //       ]),
-  //     }),
-  //   )
-  //   .query(({ input }) => {
-  //     return input;
-  //   }),
-  // procedureWithDescription: procedure
-  //   .meta({
-  //     description:
-  //       "# This is a description\n\nIt's a **good** one.\nIt may be overkill in certain situations, but procedures descriptions can render markdown thanks to [react-markdown](https://github.com/remarkjs/react-markdown) and [tailwindcss-typography](https://github.com/tailwindlabs/tailwindcss-typography)\n1. Lists\n2. Are\n3. Supported\n but I *personally* think that [links](https://github.com/aidansunbury/trpc-ui) and images ![Image example](https://private-user-images.githubusercontent.com/64103161/384591987-7dc0e751-d493-4337-ac8d-a1f16924bf48.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzExNDM3OTMsIm5iZiI6MTczMTE0MzQ5MywicGF0aCI6Ii82NDEwMzE2MS8zODQ1OTE5ODctN2RjMGU3NTEtZDQ5My00MzM3LWFjOGQtYTFmMTY5MjRiZjQ4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDExMDklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMTA5VDA5MTEzM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTE4YmM4OTlkZmYyNmJjOWI5YzgwZDUxOTVlYTBjODlkMTVkMzNlNmJjZDhkZDJiNTRhNzFmNDZhMzllNDc2ZGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.FsvDvXo6S7n4uOsi3LMUUOeEhjXq6LF88MlU60gzZ2k)\n are the most useful for documentation purposes",
-  //   })
-  //   .input(
-  //     z.object({
-  //       id: z.string().describe("The id of the thing."),
-  //       searchTerm: z
-  //         .string()
-  //         .optional()
-  //         .describe(
-  //           "Even term descriptions *can* render basic markdown, but don't get too fancy",
-  //         ),
-  //       searchTerm2: z
-  //         .string()
-  //         .optional()
-  //         .describe(
-  //           "The name of the thing to search for. Really really long long long boi long boi long Really really long long long boi long boi long Really really long long long boi long boi long Really really long long long boi long boi long",
-  //         ),
-  //     }),
-  //   )
-  //   .query(() => {
-  //     return "Was that described well enough?";
-  //   }),
-  // nonObjectInput: procedure.input(z.string()).query(({ input }) => {
-  //   return `Hello ${input}`;
-  // }),
-  // slowProcedure: procedure
-  //   .input(
-  //     z.object({
-  //       name: z.string(),
-  //     }),
-  //   )
-  //   .query(async ({ input }) => {
-  //     // two second delay
-  //     await new Promise((resolve) => setTimeout(resolve, 2000));
-  //     return `Hello ${input.name}`;
-  //   }),
-  // anErrorThrowingRoute: procedure
-  //   .input(
-  //     z.object({
-  //       ok: z.string(),
-  //     }),
-  //   )
-  //   .query(() => {
-  //     throw new TRPCError({
-  //       message: "It broke.",
-  //       code: "FORBIDDEN",
-  //     });
-  //   }),
-  // allInputs: procedure
-  //   .input(
-  //     z.object({
-  //       obj: z.object({
-  //         string: z.string().optional(),
-  //       }),
-  //       stringMin5: z.string().min(5),
-  //       numberMin10: z.number().min(10),
-  //       stringOptional: z.string().optional(),
-  //       enum: z.enum(["One", "Two"]),
-  //       optionalEnum: z.enum(["Three", "Four"]).optional(),
-  //       stringArray: z.string().array(),
-  //       boolean: z.boolean(),
-  //       discriminatedUnion: z.discriminatedUnion("disc", [
-  //         z.object({
-  //           disc: z.literal("one"),
-  //           oneProp: z.string(),
-  //         }),
-  //         z.object({
-  //           disc: z.literal("two"),
-  //           twoProp: z.enum(["one", "two"]),
-  //         }),
-  //       ]),
-  //       union: z.union([z.literal("one"), z.literal(2)]),
-  //     }),
-  //   )
-  //   .query(() => ({ goodJob: "yougotthedata" })),
 });
 
 // export type definition of API

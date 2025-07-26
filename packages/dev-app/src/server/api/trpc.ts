@@ -51,7 +51,7 @@ const t = initTRPC
   .context<typeof createTRPCContext>()
   .meta<TRPCPanelMeta>()
   .create({
-    // transformer: env.NEXT_PUBLIC_SUPERJSON === "false" ? undefined : superjson,
+    transformer: undefined,
     errorFormatter({ shape, error }) {
       return {
         ...shape,
