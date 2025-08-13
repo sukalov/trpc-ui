@@ -10,7 +10,9 @@
   },
   "typings": "lib/src/index.d.ts",
   "scripts": {
-    "build": "npx rollup --bundleConfigAsCjs --config rollup.config.js",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "build": "pnpx rollup --bundleConfigAsCjs --config rollup.config.js",
     "dev": "rollup --config rollup.config.js --watch --bundleConfigAsCjs"
   },
   "author": "",
