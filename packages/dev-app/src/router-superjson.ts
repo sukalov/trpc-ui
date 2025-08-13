@@ -78,7 +78,15 @@ const deepRouterSuperjson = createTRPCRouterSuperjson({
 
 // {"0":{"json":{"memo":"dd","transactionId":"txn_01K2B49GD0HE7FZFY33TBEZC3E"}}}
 
+// valid query
+// http://localhost:3000/trpc/transaction.budgetOptions?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22transactionId%22%3A%22txn_01K23XPNG0J376K8N7FYE0PNHT%22%7D%7D%7D
+
 const postsRouterSuperjson = createTRPCRouterSuperjson({
+  nothing: procedureSuperjson.query(() => {
+    return {
+      test: "datt",
+    };
+  }),
   superMutation: procedureSuperjson
     .input(
       type({

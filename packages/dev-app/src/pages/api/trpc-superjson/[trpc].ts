@@ -1,5 +1,5 @@
-import { createNextApiHandler } from "@trpc/server/adapters/next";
 import { initTRPC } from "@trpc/server";
+import { createNextApiHandler } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import type { TRPCPanelMeta } from "trpc-ui";
 import { ZodError } from "zod";
@@ -31,7 +31,8 @@ const tSuperjson = initTRPC
 const loggingMiddleware = tSuperjson.middleware(
   async ({ next, path, type, getRawInput }) => {
     const rawInput = await getRawInput();
-    console.log(`= [SUPERJSON ${type.toUpperCase()}] ${path}`);
+    console.log(`=
+ [SUPERJSON ${type.toUpperCase()}] ${path}`);
     console.log("Raw Input:", rawInput);
     console.log("Input type:", typeof rawInput);
     console.log("Input JSON:", JSON.stringify(rawInput, null, 2));
