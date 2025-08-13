@@ -1,10 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { initTRPC } from "@trpc/server";
+import { type } from "arktype";
 import superjson from "superjson";
 import type { TRPCPanelMeta } from "trpc-ui";
-import { ZodError } from "zod";
-import { type } from "arktype";
 import * as v from "valibot";
+import { ZodError } from "zod";
 import * as z from "zod/v3";
 import * as z4 from "zod/v4";
 import { createTRPCContext } from "~/server/api/trpc";
@@ -76,7 +76,33 @@ const deepRouterSuperjson = createTRPCRouterSuperjson({
     })),
 });
 
+// {"0":{"json":{"memo":"dd","transactionId":"txn_01K2B49GD0HE7FZFY33TBEZC3E"}}}
+
 const postsRouterSuperjson = createTRPCRouterSuperjson({
+  superMutation: procedureSuperjson
+    .input(
+      type({
+        test: "string",
+        value: "string",
+      }),
+    )
+    .mutation(({ input }) => {
+      return {
+        ...input,
+      };
+    }),
+  superQuery: procedureSuperjson
+    .input(
+      type({
+        test: "string",
+        value: "string",
+      }),
+    )
+    .query(({ input }) => {
+      return {
+        ...input,
+      };
+    }),
   complexSuperJson: procedureSuperjson
     .input(
       z.object({
@@ -85,7 +111,7 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
         createdAt: z.date(),
         tags: z.set(z.string()),
         metadata: z.map(z.string(), z.string()),
-      })
+      }),
     )
     .query(({ input }) => {
       return {
@@ -94,7 +120,7 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
         processedAt: new Date(),
       };
     }),
-  
+
   dateTest: procedureSuperjson
     .input(
       z.object({
@@ -102,7 +128,7 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
         nested: z.object({
           text: z.string(),
         }),
-      })
+      }),
     )
     .mutation(({ input }) => {
       console.log(input);
@@ -115,7 +141,8 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
 
   createPostZodThreeSuperjson: secondValidator
     .meta({
-      description: "Zod v3 procedure with superjson types and merged validators",
+      description:
+        "Zod v3 procedure with superjson types and merged validators",
     })
     .input(
       z.object({
@@ -137,7 +164,7 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
       z4.object({
         title: z4.string().min(1).describe("Post title"),
         content: z4.string().describe("Post content"),
-        publishedAt: z4.date().describe("Publication date"),
+        publishedAt: z4.coerce.date().describe("Publication date"),
         categories: z4.set(z4.string()).describe("Post categories"),
       }),
     )
@@ -149,70 +176,74 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
       };
     }),
 
-  createPostArkTypeSuperjson: arktypeVal
-    .input(type({ 
-      name: "string",
-      age: "string",
-      birthDate: "Date",
-    }))
-    .query(({ input }) => {
-      return {
-        message: "ArkType validation with Date successful",
-        data: input,
-        processedAt: new Date(),
-      };
-    }),
+  // createPostArkTypeSuperjson: arktypeVal
+  //   .input(
+  //     type({
+  //       name: "string",
+  //       age: "string",
+  //       birthDate: "Date",
+  //     }),
+  //   )
+  //   .query(({ input }) => {
+  //     return {
+  //       message: "ArkType validation with Date successful",
+  //       data: input,
+  //       processedAt: new Date(),
+  //     };
+  //   }),
 
-  createPostValibotSuperjson: procedureSuperjson
-    .input(
-      v.object({
-        email: v.pipe(v.string(), v.email()),
-        username: v.pipe(v.string(), v.minLength(3)),
-        registeredAt: v.date(),
-        preferences: v.map(v.string(), v.string()),
-      })
-    )
-    .mutation(({ input }) => {
-      return {
-        success: true,
-        user: input,
-        processedAt: new Date(),
-      };
-    }),
+  // createPostValibotSuperjson: procedureSuperjson
+  //   .input(
+  //     v.object({
+  //       email: v.pipe(v.string(), v.email()),
+  //       username: v.pipe(v.string(), v.minLength(3)),
+  //       registeredAt: v.date(),
+  //       preferences: v.map(v.string(), v.string()),
+  //     }),
+  //   )
+  //   .mutation(({ input }) => {
+  //     return {
+  //       success: true,
+  //       user: input,
+  //       processedAt: new Date(),
+  //     };
+  //   }),
 
-  mergedZod3SuperjsonProcedure: secondValidator
-    .input(
-      z.object({
-        additionalField: z.string().describe("Additional field for merged validation"),
-        timestamps: z.set(z.date()).describe("Set of timestamps"),
-      })
-    )
-    .query(({ input }) => {
-      return {
-        message: "Merged Zod v3 validation with superjson",
-        data: input,
-        processedAt: new Date(),
-      };
-    }),
+  // mergedZod3SuperjsonProcedure: secondValidator
+  //   .input(
+  //     z.object({
+  //       additionalField: z
+  //         .string()
+  //         .describe("Additional field for merged validation"),
+  //       timestamps: z.set(z.date()).describe("Set of timestamps"),
+  //     }),
+  //   )
+  //   .query(({ input }) => {
+  //     return {
+  //       message: "Merged Zod v3 validation with superjson",
+  //       data: input,
+  //       processedAt: new Date(),
+  //     };
+  //   }),
 
-  mergedArktypeSuperjsonProcedure: arktypeVal
-    .input(
-      type({
-        category: "string",
-        priority: "'low' | 'medium' | 'high'",
-        dueDate: "Date",
-        labels: "Set<string>",
-      })
-    )
-    .mutation(({ input }) => {
-      return {
-        message: "Merged ArkType validation with superjson",
-        result: input,
-        processedAt: new Date(),
-      };
-    }),
+  // mergedArktypeSuperjsonProcedure: arktypeVal
+  //   .input(
+  //     type({
+  //       category: "string",
+  //       priority: "'low' | 'medium' | 'high'",
+  //       dueDate: "Date",
+  //       // labels: "Set<string>",
+  //     }),
+  //   )
+  //   .mutation(({ input }) => {
+  //     return {
+  //       message: "Merged ArkType validation with superjson",
+  //       result: input,
+  //       processedAt: new Date(),
+  //     };
+  //   }),
 
-  deep: deepRouterSuperjson,
+  // deep: deepRouterSuperjson,
 });
 
 export const appRouterSuperjson = createTRPCRouterSuperjson({

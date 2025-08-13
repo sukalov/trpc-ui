@@ -65,7 +65,7 @@ export function createProcedureFetcher(options: FetchWrapperOptions) {
         );
       } else {
         // For mutations, add input as request body
-        requestOptions.body = JSON.stringify(serializedInput);
+        requestOptions.body = JSON.stringify(input);
       }
     }
 

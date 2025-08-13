@@ -32,11 +32,36 @@ import { useState } from "react";
 import { useRenderOptions } from "../components/contexts/OptionsContext";
 import { DocumentationSection } from "./DocumentationSection";
 
+import JsonForm from "@rjsf/material-ui";
+import { RJSFSchema } from "@rjsf/utils";
+import validator from "@rjsf/validator-ajv8";
+import SuperJSON from "superjson";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const wrapSuperJson = (json: any, usingSuperJson: boolean) => {
+  if (!usingSuperJson) {
+    return json;
+  }
+
+  return {
+    json: json,
+    meta: {
+      values: {},
+    },
+  };
+};
+
+const getRootData = (json: any, usingSuperJson: boolean) => {
+  if (!usingSuperJson) {
+    return json;
+  }
+  return json.json;
+};
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -63,7 +88,9 @@ function a11yProps(index: number) {
 
 export function Form({ procedure }: { procedure: Procedure }) {
   const { options } = useRenderOptions();
-  const [data, setData] = useState<object>({});
+  const usingSuperJson = options.transformer === "superjson";
+
+  const [data, setData] = useState<object>(wrapSuperJson({}, usingSuperJson));
   const [tabValue, setTabValue] = React.useState(0);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<{
@@ -75,6 +102,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
 
   const fetcher = createProcedureFetcher({
     baseUrl: options.url,
+    transformer: usingSuperJson ? SuperJSON : undefined,
   });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -98,7 +126,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
     if (procedure.schema) {
       try {
         const sampleData = sample(procedure.schema);
-        setData(sampleData || {});
+        setData(wrapSuperJson(sampleData || {}, usingSuperJson));
       } catch (e) {
         console.error("Error generating sample data:", e);
       }
@@ -134,10 +162,6 @@ export function Form({ procedure }: { procedure: Procedure }) {
     }
   };
 
-  if (!procedure.schema) {
-    return "No Schema";
-  }
-
   return (
     <div className="m-2 bg-white">
       {/* Documentation Section */}
@@ -152,20 +176,35 @@ export function Form({ procedure }: { procedure: Procedure }) {
               onChange={handleTabChange}
               aria-label="editing mode tabs"
             >
-              <Tab label="Form View" {...a11yProps(0)} />
-              <Tab label="JSON View" {...a11yProps(1)} />
+              {procedure.schema && <Tab label="Form View" {...a11yProps(0)} />}
+              <Tab label="JSON View" {...a11yProps(procedure.schema ? 1 : 0)} />
             </Tabs>
           </Box>
-          <CustomTabPanel value={tabValue} index={0}>
-            <JsonForms
-              schema={procedure.schema}
-              data={data}
-              renderers={materialRenderers}
-              cells={materialCells}
-              onChange={({ data }) => setData(data)}
-            />
-          </CustomTabPanel>
-          <CustomTabPanel value={tabValue} index={1}>
+          {procedure.schema && (
+            <CustomTabPanel value={tabValue} index={0}>
+              <JsonForm
+                validator={validator}
+                schema={procedure.schema}
+                formData={getRootData(data, usingSuperJson)}
+                onChange={({ formData }) =>
+                  setData((state) => {
+                    if (!usingSuperJson) {
+                      return formData || {};
+                    }
+                    const { json, ...rest } = state;
+                    return {
+                      json: formData,
+                      ...rest,
+                    };
+                  })
+                }
+              >
+                {/* This div is needed to ensure there is no default submit button */}
+                <div />
+              </JsonForm>
+            </CustomTabPanel>
+          )}
+          <CustomTabPanel value={tabValue} index={procedure.schema ? 1 : 0}>
             <Editor
               defaultLanguage="json"
               options={{
@@ -175,6 +214,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
                 formatOnType: true,
               }}
               height={"25vh"}
+              // edit raw data
               value={JSON.stringify(data, null, 2)}
               onChange={handleEditorChange}
             />
@@ -197,13 +237,15 @@ export function Form({ procedure }: { procedure: Procedure }) {
               >
                 Clear
               </Button>
-              <Button
-                onClick={handleAutofill}
-                startIcon={<AutoFixHighIcon />}
-                size="small"
-              >
-                Autofill
-              </Button>
+              {procedure.schema && (
+                <Button
+                  onClick={handleAutofill}
+                  startIcon={<AutoFixHighIcon />}
+                  size="small"
+                >
+                  Autofill
+                </Button>
+              )}
             </ButtonGroup>
 
             <Button

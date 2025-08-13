@@ -4,7 +4,7 @@ import { RootComponent } from "trpc-ui/react-app/Root";
 import { env } from "~/env.mjs";
 import { appRouterSuperjson } from "~/router-superjson";
 
-console.log(`Using superjson: true`);
+console.log("Using superjson: true");
 
 const parseV2 = parseTRPCRouter(appRouterSuperjson);
 

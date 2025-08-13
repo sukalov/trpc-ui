@@ -83,6 +83,7 @@ export function parseTRPCRouter(
             if ("_zod" in mergedSchema) {
               jsonSchema = z4.toJSONSchema(mergedSchema, {
                 target: "draft-7",
+                unrepresentable: "any",
               });
             } else {
               jsonSchema = zodToJsonSchema(mergedSchema);
