@@ -41,7 +41,7 @@ export function parseTRPCRouter(
     const nodePath = [...currentPath, key];
 
     // Check if it's a procedure (query or mutation)
-    if (item && item._def && item._def.type) {
+    if (item?._def?.type) {
       const meta = item._def.meta || {};
 
       // Determine validator type

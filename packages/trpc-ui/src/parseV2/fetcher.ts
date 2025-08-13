@@ -64,7 +64,7 @@ export function createProcedureFetcher(options: FetchWrapperOptions) {
 
     // Construct final URL with query parameters
     if (queryParts.length > 0) {
-      url += "?" + queryParts.join("&");
+      url += `?${queryParts.join("&")}`;
     }
 
     console.log("🔍 Request Debug:");

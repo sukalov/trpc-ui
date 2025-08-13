@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { create, type StoreApi, type UseBoundStore } from "zustand";
+import { type StoreApi, type UseBoundStore, create } from "zustand";
 
 type CollapsibleState = Record<string, boolean>;
 type CollapsibleStore = UseBoundStore<StoreApi<CollapsibleState>>;

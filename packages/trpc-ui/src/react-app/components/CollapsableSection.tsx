@@ -3,6 +3,7 @@ import {
   collapsables,
   useCollapsableIsShowing,
 } from "@src/react-app/components/contexts/SiteNavigationContext";
+import { useSiteNavigationContext } from "@src/react-app/components/contexts/SiteNavigationContext";
 import {
   backgroundColor,
   solidColorBg,
@@ -15,7 +16,6 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { useSiteNavigationContext } from "@src/react-app/components/contexts/SiteNavigationContext";
 
 export type ColorSchemeType =
   | "query"

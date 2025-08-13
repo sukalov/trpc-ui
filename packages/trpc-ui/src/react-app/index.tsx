@@ -24,5 +24,5 @@ root.render(
     options={options}
     trpc={trpc}
     parsedRouter={{}}
-  />
+  />,
 );

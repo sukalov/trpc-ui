@@ -8,7 +8,7 @@ export function detectValidatorType(validator: any): ValidatorType {
 
   // First attempt: Check for standard schema vendor property
   try {
-    if (validator["~standard"] && validator["~standard"].vendor) {
+    if (validator["~standard"]?.vendor) {
       const vendor = validator["~standard"].vendor.toLowerCase();
       if (vendor.includes("zod")) return "zod";
       if (vendor.includes("valibot")) return "valibot";

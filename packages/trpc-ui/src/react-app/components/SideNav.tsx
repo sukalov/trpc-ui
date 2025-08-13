@@ -1,19 +1,19 @@
 import type { ParsedProcedure } from "@src/parse/parseProcedure";
+import type {
+  ParsedTRPCRouter,
+  Router,
+  RouterOrProcedure,
+} from "@src/parseV2/types";
 import { Chevron } from "@src/react-app/components/Chevron";
 import { ItemTypeIcon } from "@src/react-app/components/ItemTypeIcon";
 import {
   collapsables,
   useSiteNavigationContext,
 } from "@src/react-app/components/contexts/SiteNavigationContext";
+import { useCollapsableIsShowing } from "@src/react-app/components/contexts/SiteNavigationContext";
 import { colorSchemeForNode } from "@src/react-app/components/style-utils";
 import React, { useCallback } from "react";
 import type { ParsedRouter } from "../../parse/parseRouter";
-import type {
-  ParsedTRPCRouter,
-  Router,
-  RouterOrProcedure,
-} from "@src/parseV2/types";
-import { useCollapsableIsShowing } from "@src/react-app/components/contexts/SiteNavigationContext";
 export function SideNav({
   // rootRouter,
   open,

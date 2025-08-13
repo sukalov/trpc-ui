@@ -1,12 +1,12 @@
+import { toJsonSchema } from "@valibot/to-json-schema";
+import { type } from "arktype";
+import type { JSONSchema7Type } from "json-schema";
+import * as v from "valibot";
+import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { appRouter } from "./router";
-import { z } from "zod";
-import { type } from "arktype";
-import { toJsonSchema } from "@valibot/to-json-schema";
-import * as v from "valibot";
-import type { JSONSchema7Type } from "json-schema";
 
-let index = 0;
+const index = 0;
 
 appRouter.postsRouter.createPost;
 
@@ -34,7 +34,7 @@ const ark = type({
 }).and(
   type({
     text1: "string",
-  })
+  }),
 );
 
 const vali = v.object({
@@ -98,7 +98,7 @@ expected["~standard"].vendor;
 // });
 
 function detectValidatorType(
-  validator: any
+  validator: any,
 ): "zod" | "valibot" | "arktype" | "unknown" {
   // Handle null or undefined
   if (validator == null) {
@@ -107,7 +107,7 @@ function detectValidatorType(
 
   // First attempt: Check for standard schema vendor property
   try {
-    if (validator["~standard"] && validator["~standard"].vendor) {
+    if (validator["~standard"]?.vendor) {
       const vendor = validator["~standard"].vendor.toLowerCase();
       if (vendor.includes("zod")) return "zod";
       if (vendor.includes("valibot")) return "valibot";
@@ -218,8 +218,8 @@ function parseTRPCRouter(
   router: any,
   currentPath: string[] = [],
   detectValidatorFn: (
-    validator: any
-  ) => "zod" | "valibot" | "arktype" | "unknown" | "mixed" = () => "unknown"
+    validator: any,
+  ) => "zod" | "valibot" | "arktype" | "unknown" | "mixed" = () => "unknown",
 ): ParsedTRPCRouter {
   // The result object we'll build up
   const result: Record<string, any> = {};
@@ -237,7 +237,7 @@ function parseTRPCRouter(
     const nodePath = [...currentPath, key];
 
     // Check if it's a procedure (query or mutation)
-    if (item && item._def && item._def.type) {
+    if (item?._def?.type) {
       const meta = item._def.meta || {};
 
       // Determine validator type
@@ -256,7 +256,7 @@ function parseTRPCRouter(
 
         // Check if all inputs are of the same type
         const allSameType = item._def.inputs.every(
-          (input) => detectValidatorFn(input) === firstType
+          (input) => detectValidatorFn(input) === firstType,
         );
 
         validatorType = allSameType ? firstType : "mixed";
@@ -336,7 +336,7 @@ console.dir(
   JSON.stringify(parseTRPCRouter(appRouter, [], detectValidatorType)),
   {
     depth: null,
-  }
+  },
 );
 
 // console.log(detectValidatorType(ark));

@@ -1,5 +1,5 @@
-import type { RenderOptions } from "@src/render";
 import type { ParsedTRPCRouter } from "@src/parseV2/types";
+import type { RenderOptions } from "@src/render";
 import React, { createContext, useContext, ReactNode } from "react";
 
 // @ts-expect-error
@@ -41,7 +41,7 @@ export const useRenderOptions = (): {
 
   if (context === null) {
     throw new Error(
-      "useRenderOptions must be used within a RenderOptionsProvider"
+      "useRenderOptions must be used within a RenderOptionsProvider",
     );
   }
 
