@@ -315,6 +315,7 @@ export function Form({ procedure }: { procedure: Procedure }) {
           ) : (
             <Box sx={{ p: 1.5 }}>
               <JsonViewer
+                highlightUpdates
                 rootName={false}
                 value={response.data}
                 quotesOnKeys={false}

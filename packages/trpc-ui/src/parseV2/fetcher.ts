@@ -53,16 +53,9 @@ export function createProcedureFetcher(options: FetchWrapperOptions) {
 
     // Handle input serialization based on procedure type
     if (input !== undefined) {
-      // Apply transformer if available (like tRPC does)
-      const serializedInput = transformer
-        ? transformer.serialize(input)
-        : input;
-
       if (procedure.type === "query") {
         // For queries, add input as URL parameter (no batch for single requests)
-        queryParts.push(
-          `input=${encodeURIComponent(JSON.stringify(serializedInput))}`,
-        );
+        queryParts.push(`input=${encodeURIComponent(JSON.stringify(input))}`);
       } else {
         // For mutations, add input as request body
         requestOptions.body = JSON.stringify(input);

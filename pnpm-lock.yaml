@@ -239,8 +239,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
       '@textea/json-viewer':
-        specifier: ^3.0.0
-        version: 3.5.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@6.4.8(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^4.0.0
+        version: 4.0.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@6.4.8(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15
@@ -2314,6 +2314,15 @@ packages:
       '@emotion/react': ^11
       '@emotion/styled': ^11
       '@mui/material': ^5
+      react: ^17 || ^18
+      react-dom: ^17 || ^18
+
+  '@textea/json-viewer@4.0.1':
+    resolution: {integrity: sha512-7FH4ti3kVNyKhe/gl85w+8KllXJY9XQalY2KZnBn9ST1CjhqZQCWJLkYf24aX2FOv2D/8cvAllYkFX46A7C9KQ==}
+    peerDependencies:
+      '@emotion/react': ^11
+      '@emotion/styled': ^11
+      '@mui/material': ^6
       react: ^17 || ^18
       react-dom: ^17 || ^18
 
@@ -9372,6 +9381,20 @@ snapshots:
       '@testing-library/dom': 8.20.1
 
   '@textea/json-viewer@3.5.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@6.4.8(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.2.0)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0)
+      '@mui/material': 6.4.8(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      clsx: 2.1.1
+      copy-to-clipboard: 3.3.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      zustand: 4.5.5(@types/react@18.3.18)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+
+  '@textea/json-viewer@4.0.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@6.4.8(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.2.0)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0)

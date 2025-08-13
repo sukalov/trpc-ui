@@ -81,10 +81,31 @@ const deepRouterSuperjson = createTRPCRouterSuperjson({
 // valid query
 // http://localhost:3000/trpc/transaction.budgetOptions?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22transactionId%22%3A%22txn_01K23XPNG0J376K8N7FYE0PNHT%22%7D%7D%7D
 
+const validResult = {
+  result: {
+    data: {
+      json: {
+        addressLine1: "223  West Wilkinson Street",
+        addressLine2: null,
+        city: "Kill Devil Hills",
+        county: null,
+        id: "add_01K0W56VT9EMQV4BAWTJ6E2KZJ",
+        isBilling: true,
+        isDefault: false,
+        name: "Billing Address",
+        organizationId: "org_01K0W548C5G5ANPVYH9A0FFQ91",
+        state: "NC",
+        zipcode: "27948",
+      },
+    },
+  },
+};
+
 const postsRouterSuperjson = createTRPCRouterSuperjson({
-  nothing: procedureSuperjson.query(() => {
+  nothing: procedureSuperjson.input(z.any()).query(({ input }) => {
     return {
-      test: "datt",
+      testSet: new Set(["asd"]),
+      test: Math.random(),
     };
   }),
   superMutation: procedureSuperjson
@@ -108,7 +129,8 @@ const postsRouterSuperjson = createTRPCRouterSuperjson({
     )
     .query(({ input }) => {
       return {
-        ...input,
+        theTest: input.test,
+        theValue: input.value,
       };
     }),
   complexSuperJson: procedureSuperjson
