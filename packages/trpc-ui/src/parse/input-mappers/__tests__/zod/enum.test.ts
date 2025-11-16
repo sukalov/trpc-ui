@@ -1,5 +1,6 @@
 import { defaultReferences } from "@src/parse/input-mappers/defaultReferences";
 import { parseZodEnumDef } from "@src/parse/input-mappers/zod/parsers/parseZodEnumDef";
+import { toV3EnumDef } from "@src/parse/input-mappers/zod/v4-compat";
 import type { EnumNode } from "@src/parse/parseNodeTypes";
 import { z } from "zod";
 
@@ -11,7 +12,7 @@ describe("Parse ZodEnum", () => {
       path: [],
     };
     const parsed = parseZodEnumDef(
-      z.enum(["one", "two", "three"])._def,
+      toV3EnumDef(z.enum(["one", "two", "three"])._def),
       defaultReferences(),
     );
     expect(expected).toStrictEqual(parsed);

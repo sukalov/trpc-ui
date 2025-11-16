@@ -3,7 +3,7 @@ import type {
   ParsedInputNode,
 } from "@src/parse/parseNodeTypes";
 import { nodePropertiesFromRef } from "@src/parse/utils";
-import type { ZodBigIntDef } from "zod";
+import type { ZodBigIntDef } from "zod/v3";
 
 export function parseZodBigIntDef(
   def: ZodBigIntDef,

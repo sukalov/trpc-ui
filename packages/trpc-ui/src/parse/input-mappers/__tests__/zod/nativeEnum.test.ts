@@ -1,5 +1,6 @@
 import { defaultReferences } from "@src/parse/input-mappers/defaultReferences";
 import { parseZodNativeEnumDef } from "@src/parse/input-mappers/zod/parsers/parseZodNativeEnumDef";
+import { toV3NativeEnumDef } from "@src/parse/input-mappers/zod/v4-compat";
 import type { EnumNode } from "@src/parse/parseNodeTypes";
 import { z } from "zod";
 
@@ -18,7 +19,7 @@ describe("Parse ZodNativeEnum", () => {
     }
 
     const parsed = parseZodNativeEnumDef(
-      z.nativeEnum(ExampleEnum)._def,
+      toV3NativeEnumDef(z.nativeEnum(ExampleEnum)._def),
       defaultReferences(),
     );
     expect(expected).toStrictEqual(parsed);

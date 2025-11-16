@@ -3,7 +3,7 @@ import type { ObjectNode } from "@src/parse/parseNodeTypes";
 import type { ParsedProcedure } from "@src/parse/parseProcedure";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import { toJSONSchema } from "zod";
 
 export const testTrpcInstance = initTRPC.meta<TRPCPanelMeta>().create({});
 
@@ -92,7 +92,7 @@ export const expectedTestRouterInputParsedNode: ObjectNode = {
 export const testQueryExpectedParseResult: ParsedProcedure = {
   nodeType: "procedure",
   node: expectedTestRouterInputParsedNode,
-  inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+  inputSchema: toJSONSchema(parseTestRouterInputSchema),
   procedureType: "query",
   pathFromRootRouter: ["testQuery"],
   extraData: {
@@ -103,7 +103,7 @@ export const testQueryExpectedParseResult: ParsedProcedure = {
 export const testMutationExpectedParseResult: ParsedProcedure = {
   nodeType: "procedure",
   node: expectedTestRouterInputParsedNode,
-  inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+  inputSchema: toJSONSchema(parseTestRouterInputSchema),
   procedureType: "mutation",
   pathFromRootRouter: ["testMutation"],
   extraData: {

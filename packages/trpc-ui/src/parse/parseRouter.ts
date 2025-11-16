@@ -1,12 +1,13 @@
 import { type Router, isProcedure, isRouter } from "./routerType";
 
 import type { AnyTRPCRouter } from "@trpc/server";
-import type { zodToJsonSchema } from "zod-to-json-schema";
 import { logParseError } from "./parseErrorLogs";
 import { type ParsedProcedure, parseProcedure } from "./parseProcedure";
 
-// TODO this should be more specific, as it hurts the type safety lower down
-export type JSON7SchemaType = ReturnType<typeof zodToJsonSchema>;
+// Zod v4's toJSONSchema returns a JSON Schema object
+// We define this as a generic object type since the exact JSONSchema namespace
+// is not exported from the main zod package
+export type JSON7SchemaType = Record<string, any>;
 
 export type ProcedureType = "query" | "mutation" | "subscription";
 

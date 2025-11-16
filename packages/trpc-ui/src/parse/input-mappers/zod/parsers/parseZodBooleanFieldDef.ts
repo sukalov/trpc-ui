@@ -1,5 +1,5 @@
 import { nodePropertiesFromRef } from "@src/parse/utils";
-import type { ZodBooleanDef } from "zod";
+import type { ZodBooleanDef } from "zod/v3";
 import type { BooleanNode, ParseFunction } from "../../../parseNodeTypes";
 
 export const parseZodBooleanFieldDef: ParseFunction<

@@ -15,9 +15,9 @@ import type {
   ParseReferences,
   ParsedInputNode,
 } from "@src/parse/parseNodeTypes";
-import { type AnyZodObject, z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import { type ZodObject, z, toJSONSchema } from "zod";
 import { zodSelectorFunction } from "./input-mappers/zod/selector";
+import { castToZodDefWithType } from "./input-mappers/zod/zod-types";
 
 export type ProcedureExtraData = {
   parameterDescriptions: { [path: string]: string };
@@ -36,8 +36,8 @@ export type ParsedProcedure = {
 type SupportedInputType = "zod";
 
 const inputParserMap = {
-  zod: (zodObject: AnyZodObject, refs: ParseReferences) => {
-    return zodSelectorFunction(zodObject._def, refs);
+  zod: (zodObject: ZodObject<any>, refs: ParseReferences) => {
+    return zodSelectorFunction(castToZodDefWithType(zodObject.def), refs);
   },
 };
 
@@ -48,7 +48,7 @@ function inputType(_: unknown): SupportedInputType | "unsupported" {
 type NodeAndInputSchemaFromInputs =
   | {
       node: ParsedInputNode;
-      schema: ReturnType<typeof zodToJsonSchema>;
+      schema: JSON7SchemaType;
       parseInputResult: "success";
     }
   | {
@@ -65,10 +65,7 @@ function nodeAndInputSchemaFromInputs(
   if (!inputs.length) {
     return {
       parseInputResult: "success",
-      schema: zodToJsonSchema(emptyZodObject, {
-        errorMessages: true,
-        $refStrategy: "none",
-      }),
+      schema: toJSONSchema(emptyZodObject),
       node: inputParserMap.zod(emptyZodObject, {
         path: [],
         options,
@@ -91,7 +88,7 @@ function nodeAndInputSchemaFromInputs(
     }
 
     input = inputs.reduce(
-      (acc, input: z.AnyZodObject) => (acc as z.AnyZodObject).merge(input),
+      (acc, input: z.ZodObject<any>) => (acc as z.ZodObject<any>).merge(input),
       emptyZodObject,
     );
   }
@@ -103,11 +100,8 @@ function nodeAndInputSchemaFromInputs(
 
   return {
     parseInputResult: "success",
-    schema: zodToJsonSchema(input as any, {
-      errorMessages: true,
-      $refStrategy: "none",
-    }), //
-    node: zodSelectorFunction((input as any)._def, {
+    schema: toJSONSchema(input as any),
+    node: zodSelectorFunction(castToZodDefWithType((input as any).def), {
       path: [],
       options,
       addDataFunctions,

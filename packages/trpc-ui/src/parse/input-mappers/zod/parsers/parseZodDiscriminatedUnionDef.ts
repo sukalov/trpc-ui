@@ -1,10 +1,11 @@
 import { nodePropertiesFromRef } from "@src/parse/utils";
-import { type AnyZodObject, ZodFirstPartyTypeKind } from "zod";
+import { type AnyZodObject, ZodFirstPartyTypeKind } from "zod/v3";
 import type {
   DiscriminatedUnionNode,
   ParseFunction,
 } from "../../../parseNodeTypes";
 import { zodSelectorFunction } from "../selector";
+import { castToZodDefWithType } from "../zod-types";
 
 type OptionsMap = Map<string, AnyZodObject>;
 
@@ -51,7 +52,7 @@ export const parseZodDiscriminatedUnionDef: ParseFunction<
   const entries = Array.from(defConsistent.options.entries());
   const nodeEntries = entries.map(([discriminatorValue, zodObj]) => [
     discriminatorValue,
-    zodSelectorFunction(zodObj._def, refs),
+    zodSelectorFunction(castToZodDefWithType(zodObj._def), refs),
   ]);
 
   const nodesMap = Object.fromEntries(nodeEntries);

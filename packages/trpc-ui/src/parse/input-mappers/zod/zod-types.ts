@@ -1,3 +1,8 @@
-import type { ZodFirstPartyTypeKind, ZodTypeDef } from "zod";
+export type ZodDefWithType = {
+  type: string;
+  [key: string]: unknown;
+};
 
-export type ZodDefWithType = ZodTypeDef & { typeName: ZodFirstPartyTypeKind };
+export function castToZodDefWithType(def: unknown): ZodDefWithType {
+  return def as unknown as ZodDefWithType;
+}

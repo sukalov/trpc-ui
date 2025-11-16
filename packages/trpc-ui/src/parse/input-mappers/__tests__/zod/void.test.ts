@@ -12,7 +12,7 @@ describe("Parse ZodVoid", () => {
       value: undefined,
     };
     const zodSchema = z.void();
-    const parsed = parseZodVoidDef(zodSchema._def, defaultReferences());
+    const parsed = parseZodVoidDef(zodSchema.def as unknown as Parameters<typeof parseZodVoidDef>[0], defaultReferences());
     expect(parsed).toStrictEqual(expected);
   });
 
@@ -23,7 +23,7 @@ describe("Parse ZodVoid", () => {
       value: undefined,
     };
     const zodSchema = z.void();
-    const parsed = zodSelectorFunction(zodSchema._def, defaultReferences());
+    const parsed = zodSelectorFunction(zodSchema.def as unknown as Parameters<typeof zodSelectorFunction>[0], defaultReferences());
     expect(parsed).toStrictEqual(expected);
   });
 });

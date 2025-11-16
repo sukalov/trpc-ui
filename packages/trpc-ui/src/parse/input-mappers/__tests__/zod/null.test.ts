@@ -11,7 +11,7 @@ describe("Parse ZodNull", () => {
       path: [],
     };
     const schema = z.null();
-    expect(parseZodNullDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodNullDef(schema.def as unknown as Parameters<typeof parseZodNullDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });

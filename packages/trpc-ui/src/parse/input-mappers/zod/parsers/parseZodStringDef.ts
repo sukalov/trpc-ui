@@ -1,5 +1,5 @@
 import { nodePropertiesFromRef } from "@src/parse/utils";
-import type { ZodStringDef } from "zod";
+import type { ZodStringDef } from "zod/v3";
 import type { ParseFunction, StringNode } from "../../../parseNodeTypes";
 
 export const parseZodStringDef: ParseFunction<ZodStringDef, StringNode> = (

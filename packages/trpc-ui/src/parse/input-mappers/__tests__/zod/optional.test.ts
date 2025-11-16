@@ -11,7 +11,7 @@ describe("Parse ZodOptional", () => {
       path: [],
     };
     const schema = z.number().optional();
-    expect(parseZodOptionalDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodOptionalDef(schema.def as unknown as Parameters<typeof parseZodOptionalDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });
@@ -32,7 +32,7 @@ describe("Parse ZodOptional", () => {
         number: z.number(),
       })
       .optional();
-    expect(parseZodOptionalDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodOptionalDef(schema.def as unknown as Parameters<typeof parseZodOptionalDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });

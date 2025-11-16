@@ -22,7 +22,7 @@ describe("Parse Zod Union", () => {
       ],
     };
     const zodSchema = z.union([z.literal("one"), z.literal(2)]);
-    const parsedZod = parseZodUnionDef(zodSchema._def, defaultReferences());
+    const parsedZod = parseZodUnionDef(zodSchema.def as any, defaultReferences());
     expect(parsedZod).toStrictEqual(expected);
   });
 });

@@ -10,7 +10,7 @@ describe("Zod BigInt", () => {
       path: [],
     };
     const schema = z.bigint();
-    const parsed = parseZodBigIntDef(schema._def, defaultReferences());
+    const parsed = parseZodBigIntDef(schema.def as unknown as Parameters<typeof parseZodBigIntDef>[0], defaultReferences());
     expect(parsed).toStrictEqual(expected);
   });
 });

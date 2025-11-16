@@ -8,7 +8,7 @@ import {
   type ParsedRouter,
   parseRouterWithOptions,
 } from "@src/parse/parseRouter";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import { toJSONSchema } from "zod";
 
 describe("Parse TRPC Router", () => {
   it("should parse the test router", () => {
@@ -19,7 +19,7 @@ describe("Parse TRPC Router", () => {
         testQuery: {
           nodeType: "procedure",
           node: expectedTestRouterInputParsedNode,
-          inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+          inputSchema: toJSONSchema(parseTestRouterInputSchema),
           procedureType: "query",
           pathFromRootRouter: ["testQuery"],
           extraData: {
@@ -29,7 +29,7 @@ describe("Parse TRPC Router", () => {
         testMutation: {
           nodeType: "procedure",
           node: expectedTestRouterInputParsedNode,
-          inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+          inputSchema: toJSONSchema(parseTestRouterInputSchema),
           procedureType: "mutation",
           pathFromRootRouter: ["testMutation"],
           extraData: {
@@ -54,7 +54,7 @@ describe("Parse TRPC Router", () => {
             testQuery: {
               nodeType: "procedure",
               node: expectedTestRouterInputParsedNode,
-              inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+              inputSchema: toJSONSchema(parseTestRouterInputSchema),
               procedureType: "query",
               pathFromRootRouter: ["nestedRouter", "testQuery"],
               extraData: {
@@ -64,7 +64,7 @@ describe("Parse TRPC Router", () => {
             testMutation: {
               nodeType: "procedure",
               node: expectedTestRouterInputParsedNode,
-              inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+              inputSchema: toJSONSchema(parseTestRouterInputSchema),
               procedureType: "mutation",
               pathFromRootRouter: ["nestedRouter", "testMutation"],
               extraData: {

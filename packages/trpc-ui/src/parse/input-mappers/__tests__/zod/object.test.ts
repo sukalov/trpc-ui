@@ -11,7 +11,7 @@ describe("Parse ZodObject", () => {
       path: [],
     };
     const schema = z.object({});
-    expect(parseZodObjectDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodObjectDef(schema.def as unknown as Parameters<typeof parseZodObjectDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });
@@ -34,7 +34,7 @@ describe("Parse ZodObject", () => {
       number: z.number(),
       string: z.string(),
     });
-    expect(parseZodObjectDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodObjectDef(schema.def as unknown as Parameters<typeof parseZodObjectDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });
@@ -68,7 +68,7 @@ describe("Parse ZodObject", () => {
         }),
       }),
     });
-    expect(parseZodObjectDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodObjectDef(schema.def as unknown as Parameters<typeof parseZodObjectDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });

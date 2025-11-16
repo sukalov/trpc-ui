@@ -1,5 +1,6 @@
 import { defaultReferences } from "@src/parse/input-mappers/defaultReferences";
 import { parseZodLiteralDef } from "@src/parse/input-mappers/zod/parsers/parseZodLiteralDef";
+import { toV3LiteralDef } from "@src/parse/input-mappers/zod/v4-compat";
 import type { LiteralNode } from "@src/parse/parseNodeTypes";
 import { z } from "zod";
 
@@ -52,7 +53,7 @@ describe("Parse ZodLiteral", () => {
     ];
     for (const testCase of testCases) {
       expect(
-        parseZodLiteralDef(z.literal(testCase.value)._def, defaultReferences()),
+        parseZodLiteralDef(toV3LiteralDef(z.literal(testCase.value)._def), defaultReferences()),
       ).toStrictEqual(testCase.expectedNode);
     }
   });

@@ -1,11 +1,12 @@
 import { nodePropertiesFromRef } from "@src/parse/utils";
-import type { ZodUnionDef } from "zod";
+import type { ZodUnionDef } from "zod/v3";
 import type {
   LiteralNode,
   ParseFunction,
   UnionNode,
 } from "../../../parseNodeTypes";
 import { zodSelectorFunction } from "../selector";
+import { castToZodDefWithType } from "../zod-types";
 
 export const parseZodUnionDef: ParseFunction<ZodUnionDef, UnionNode> = (
   def,
@@ -15,7 +16,7 @@ export const parseZodUnionDef: ParseFunction<ZodUnionDef, UnionNode> = (
   return {
     type: "union",
     values: def.options.map(
-      (o) => zodSelectorFunction(o._def, { ...refs, path: [] }) as LiteralNode,
+      (o) => zodSelectorFunction(castToZodDefWithType(o._def), { ...refs, path: [] }) as LiteralNode,
     ),
     ...nodePropertiesFromRef(refs),
   };

@@ -10,7 +10,7 @@ describe("Parse ZodNullable", () => {
       path: [],
     };
     const schema = z.number().nullable();
-    expect(parseZodNullableDef(schema._def, defaultReferences())).toStrictEqual(
+    expect(parseZodNullableDef(schema.def as unknown as Parameters<typeof parseZodNullableDef>[0], defaultReferences())).toStrictEqual(
       expected,
     );
   });
