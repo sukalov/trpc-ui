@@ -3,12 +3,12 @@ import type {
   ParseReferences,
   ParsedInputNode,
 } from "@src/parse/parseNodeTypes";
-import type { ZodDefaultDef } from "zod";
+import type { ZodDefaultDef } from "../zod-types";
 
 export function parseZodDefaultDef(
   def: ZodDefaultDef,
   refs: ParseReferences,
 ): ParsedInputNode {
-  refs.addDataFunctions.addDescriptionIfExists(def, refs);
+  refs.addDataFunctions.addDescriptionIfExists(def as any, refs);
   return zodSelectorFunction(def.innerType._def, refs);
 }

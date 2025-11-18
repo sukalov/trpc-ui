@@ -27,7 +27,7 @@ export type ParseRouterRefs = {
 // Some things in the router are not procedures, these are those things keys
 const skipSet = new Set(["createCaller", "_def", "getErrorShape"]);
 
-function parseRouter(
+export function parseRouter(
   router: Router,
   routerPath: string[],
   options: TrpcPanelExtraOptions,

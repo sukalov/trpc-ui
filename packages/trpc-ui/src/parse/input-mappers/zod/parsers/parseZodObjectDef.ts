@@ -1,5 +1,5 @@
 import { nodePropertiesFromRef } from "@src/parse/utils";
-import type { ZodObjectDef } from "zod";
+import type { ZodObjectDef } from "../zod-types";
 import type {
   ObjectNode,
   ParseFunction,
@@ -21,7 +21,7 @@ export const parseZodObjectDef: ParseFunction<
     });
     children[propertyName] = node;
   }
-  refs.addDataFunctions.addDescriptionIfExists(def, refs);
+  refs.addDataFunctions.addDescriptionIfExists(def as any, refs);
   return {
     type: "object",
     children,

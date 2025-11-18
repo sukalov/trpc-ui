@@ -1,64 +1,50 @@
-import { defaultReferences } from "@src/parse/input-mappers/defaultReferences";
-import {
-  type ZodDiscriminatedUnionDefUnversioned,
-  parseZodDiscriminatedUnionDef,
-} from "@src/parse/input-mappers/zod/parsers/parseZodDiscriminatedUnionDef";
-import type { DiscriminatedUnionNode } from "@src/parse/parseNodeTypes";
 import { z } from "zod";
+import type { DiscriminatedUnionNode } from "../../../parseNodeTypes";
+import { defaultReferences } from "../../defaultReferences";
+import { parseZodDiscriminatedUnionDef } from "../../zod/parsers/parseZodDiscriminatedUnionDef";
 
-describe("Parse Zod Discriminated Union", () => {
-  //write test
-  it("should parse a discriminated union node", () => {
+describe("parseZodDiscriminatedUnionDef", () => {
+  it("should parse a discriminated union def", () => {
     const expected: DiscriminatedUnionNode = {
       type: "discriminated-union",
-      path: [],
-      discriminatorName: "disc",
-      discriminatedUnionValues: ["one", "two"],
+      discriminatorName: "type",
+      discriminatedUnionValues: ["a", "b"],
       discriminatedUnionChildrenMap: {
-        one: {
+        a: {
           type: "object",
+          path: [],
           children: {
-            numberPropertyOne: {
-              type: "number",
-              path: ["numberPropertyOne"],
-            },
-            disc: {
+            type: {
               type: "literal",
-              path: ["disc"],
-              value: "one",
+              path: ["type"],
+              value: "a",
             },
           },
-          path: [],
         },
-        two: {
+        b: {
           type: "object",
+          path: [],
           children: {
-            stringPropertyTwo: {
-              type: "string",
-              path: ["stringPropertyTwo"],
-            },
-            disc: {
+            type: {
               type: "literal",
-              path: ["disc"],
-              value: "two",
+              path: ["type"],
+              value: "b",
             },
           },
-          path: [],
         },
       },
+      path: [],
     };
-    const zodSchema = z.discriminatedUnion("disc", [
+    const zodSchema = z.discriminatedUnion("type", [
       z.object({
-        disc: z.literal("one"),
-        numberPropertyOne: z.number(),
+        type: z.literal("a"),
       }),
       z.object({
-        disc: z.literal("two"),
-        stringPropertyTwo: z.string(),
+        type: z.literal("b"),
       }),
     ]);
     const parsedZod = parseZodDiscriminatedUnionDef(
-      zodSchema._def as unknown as ZodDiscriminatedUnionDefUnversioned,
+      zodSchema._def as any,
       defaultReferences(),
     );
     expect(parsedZod).toStrictEqual(expected);

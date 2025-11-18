@@ -15,7 +15,7 @@ import type {
   ParseReferences,
   ParsedInputNode,
 } from "@src/parse/parseNodeTypes";
-import { type AnyZodObject, z } from "zod";
+import { z, ZodObject } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { zodSelectorFunction } from "./input-mappers/zod/selector";
 
@@ -36,8 +36,8 @@ export type ParsedProcedure = {
 type SupportedInputType = "zod";
 
 const inputParserMap = {
-  zod: (zodObject: AnyZodObject, refs: ParseReferences) => {
-    return zodSelectorFunction(zodObject._def, refs);
+  zod: (zodObject: any, refs: ParseReferences) => {
+    return zodSelectorFunction((zodObject as any)._def as any, refs);
   },
 };
 
@@ -65,10 +65,10 @@ function nodeAndInputSchemaFromInputs(
   if (!inputs.length) {
     return {
       parseInputResult: "success",
-      schema: zodToJsonSchema(emptyZodObject, {
+      schema: zodToJsonSchema(emptyZodObject as any, {
         errorMessages: true,
         $refStrategy: "none",
-      }),
+      } as any),
       node: inputParserMap.zod(emptyZodObject, {
         path: [],
         options,
@@ -91,7 +91,7 @@ function nodeAndInputSchemaFromInputs(
     }
 
     input = inputs.reduce(
-      (acc, input: z.AnyZodObject) => (acc as z.AnyZodObject).merge(input),
+      (acc, input: ZodObject<any, any>) => (acc as ZodObject<any, any>).merge(input),
       emptyZodObject,
     );
   }

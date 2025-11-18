@@ -1,5 +1,5 @@
-import type { ZodTypeDef } from "zod";
-import type { ZodDiscriminatedUnionDefUnversioned } from "./input-mappers/zod/parsers/parseZodDiscriminatedUnionDef";
+import type { ZodTypeDef } from "./input-mappers/zod/zod-types";
+import type { ZodDiscriminatedUnionDef } from "./input-mappers/zod/zod-types";
 import type { TrpcPanelExtraOptions } from "./parseRouter";
 
 export type SharedInputNodeProperties = {
@@ -7,7 +7,7 @@ export type SharedInputNodeProperties = {
   optional?: true;
 };
 
-type InputNodeTypes = ZodTypeDef | ZodDiscriminatedUnionDefUnversioned;
+type InputNodeTypes = ZodTypeDef | ZodDiscriminatedUnionDef;
 
 export type ArrayNode = {
   type: "array";

@@ -1,10 +1,13 @@
 import type { LiteralNode, ParseReferences } from "@src/parse/parseNodeTypes";
-import type { ZodVoidDef } from "zod";
+export type ZodVoidDef = {
+  typeName: "ZodVoid";
+};
 
 export function parseZodVoidDef(
-  _: ZodVoidDef,
+  def: ZodVoidDef, // Changed parameter name from '_' to 'def' to allow its use
   refs: ParseReferences,
 ): LiteralNode {
+  refs.addDataFunctions.addDescriptionIfExists(def as any, refs);
   return {
     type: "literal",
     value: undefined,

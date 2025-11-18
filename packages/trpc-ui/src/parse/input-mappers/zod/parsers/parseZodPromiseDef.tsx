@@ -3,12 +3,15 @@ import type {
   ParseReferences,
   ParsedInputNode,
 } from "@src/parse/parseNodeTypes";
-import type { ZodPromiseDef } from "zod";
+import type { ZodPromiseDef } from "../zod-types";
 
 export function parseZodPromiseDef(
   def: ZodPromiseDef,
   refs: ParseReferences,
 ): ParsedInputNode {
-  refs.addDataFunctions.addDescriptionIfExists(def, refs);
-  return zodSelectorFunction(def.type._def, refs);
+  const d = def as any;
+  const type = d.type || d.element;
+  const childType = zodSelectorFunction(type._def, { ...refs, path: [] });
+  refs.addDataFunctions.addDescriptionIfExists(def as any, refs);
+  return childType;
 }

@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "@trpc/server": "^11.0.0-next-beta.264",
-    "zod": "^3.19.1"
+    "zod": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -60,6 +60,7 @@
     "@trpc/server": "^11.0.0-next-beta.264",
     "@types/jest": "^29.2.4",
     "@types/json-bigint": "^1.0.1",
+    "@types/node": "^18.15.5",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "ajv": "^8.11.2",
@@ -106,6 +107,6 @@
     "string-byte-length": "^1.6.0",
     "tailwind-merge": "^2.5.5",
     "url": "^0.11.0",
-    "zod-to-json-schema": "^3.20.0"
+    "zod-to-json-schema": "^3.25.0"
   }
 }

@@ -69,7 +69,7 @@ function ClientProviders({
 }) {
   const headers = useHeaders();
   const [trpcClient] = useState(() =>
-    trpc.createClient({
+    (trpc as any).createClient({
       links: [
         httpBatchLink({
           url: options.url,
@@ -83,14 +83,15 @@ function ClientProviders({
     }),
   );
   const [queryClient] = useState(() => new QueryClient());
+  const TrpcProvider = (trpc as any).Provider;
 
   return (
-    <trpc.Provider queryClient={queryClient} client={trpcClient}>
+    <TrpcProvider queryClient={queryClient} client={trpcClient}>
       <QueryClientProvider client={queryClient}>
         {children}
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
-    </trpc.Provider>
+    </TrpcProvider>
   );
 }
 

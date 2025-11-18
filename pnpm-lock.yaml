@@ -15,8 +15,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.7
       typescript:
-        specifier: ^4.9.3
-        version: 4.9.5
+        specifier: ^5.4.5
+        version: 5.7.2
 
   packages/dev-app:
     dependencies:
@@ -63,8 +63,8 @@ importers:
         specifier: ^9.4.2
         version: 9.5.1(typescript@5.7.2)(webpack@5.97.1)
       zod:
-        specifier: ^3.24.2
-        version: 3.24.2
+        specifier: ^4.1.0
+        version: 4.1.12
     devDependencies:
       '@types/node':
         specifier: ^18.15.5
@@ -140,7 +140,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       trpc-ui:
         specifier: latest
-        version: 1.0.13(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@5.16.12(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.446)(@types/react@18.3.18)(monaco-editor@0.52.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@3.24.1)
+        version: 1.0.15(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@5.16.12(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.446)(@types/react@18.3.18)(monaco-editor@0.52.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@4.1.12)
       tsconfig-paths:
         specifier: ^4.1.0
         version: 4.2.0
@@ -151,11 +151,11 @@ importers:
         specifier: ^8.11.0
         version: 8.18.0
       zod:
-        specifier: ^3.19.1
-        version: 3.24.1
+        specifier: ^4.1.0
+        version: 4.1.12
       zod-to-json-schema:
-        specifier: ^3.20.1
-        version: 3.24.1(zod@3.24.1)
+        specifier: ^3.25.0
+        version: 3.25.0(zod@4.1.12)
     devDependencies:
       '@types/cors':
         specifier: ^2.8.13
@@ -212,11 +212,11 @@ importers:
         specifier: ^0.11.0
         version: 0.11.4
       zod:
-        specifier: ^3.19.1
-        version: 3.24.2
+        specifier: ^4.1.0
+        version: 4.1.12
       zod-to-json-schema:
-        specifier: ^3.20.0
-        version: 3.24.1(zod@3.24.2)
+        specifier: ^3.25.0
+        version: 3.25.0(zod@4.1.12)
     devDependencies:
       '@babel/core':
         specifier: ^7.20.2
@@ -290,6 +290,9 @@ importers:
       '@types/json-bigint':
         specifier: ^1.0.1
         version: 1.0.4
+      '@types/node':
+        specifier: ^18.15.5
+        version: 18.19.68
       '@types/react':
         specifier: ^18.0.21
         version: 18.3.18
@@ -5481,7 +5484,7 @@ packages:
   superagent@5.0.9:
     resolution: {integrity: sha512-aOBxh0xN3nCcaG0oot9apJe77FzzCOsg469l06Nw0gW7p9q0mfyAOhSiCLzHCFxKKCNtTx8cxymqoY2cGUfV8g==}
     engines: {node: '>= 6.4.0'}
-    deprecated: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
+    deprecated: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
 
   superjson@1.12.2:
     resolution: {integrity: sha512-ugvUo9/WmvWOjstornQhsN/sR9mnGtWGYeTxFuqLb4AiT4QdUavjGFRALCPKWWnAiUJ4HTpytj5e0t5HoMRkXg==}
@@ -5624,8 +5627,8 @@ packages:
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
 
-  trpc-ui@1.0.13:
-    resolution: {integrity: sha512-wLYgul79IUkZuUqTrIK3RRZVlYRBYmgGxiNAtG+pBhZgOZPqUtrVe49in/uiFrV5fMqwT1JLaKgw8HIdE2uMmA==}
+  trpc-ui@1.0.15:
+    resolution: {integrity: sha512-bM+cBeQgFFrDD1TNuvbsre+WXuLYbxsEoI6W4Zg402dqpMdeWD9NxEr/K4ZVaZGzbV+RAUqUZSlS4X8AMmbUpA==}
     peerDependencies:
       '@trpc/server': ^11.0.0-next-beta.264
       zod: ^3.19.1
@@ -5713,11 +5716,6 @@ packages:
 
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
-
-  typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
 
   typescript@5.7.2:
     resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
@@ -6032,16 +6030,16 @@ packages:
     resolution: {integrity: sha512-Mb6GzuRyUEl8X+6V6xzHbd4XV0au/4gOYrYP+CAfHL32uPmGswES+v2YqonZiW1NZWVA3jkssCKSU2knonm/aQ==}
     engines: {node: '>=20'}
 
-  zod-to-json-schema@3.24.1:
-    resolution: {integrity: sha512-3h08nf3Vw3Wl3PK+q3ow/lIil81IT2Oa7YpQyUUDsEWbXveMesdfK1xBd2RhCkynwZndAxixji/7SYJJowr62w==}
+  zod-to-json-schema@3.25.0:
+    resolution: {integrity: sha512-HvWtU2UG41LALjajJrML6uQejQhNJx+JBO9IflpSja4R03iNWfKXrj6W2h7ljuLyc1nKS+9yDyL/9tD1U/yBnQ==}
     peerDependencies:
-      zod: ^3.24.1
-
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+      zod: ^3.25 || ^4
 
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
+  zod@4.1.12:
+    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
 
   zustand@4.5.5:
     resolution: {integrity: sha512-+0PALYNJNgK6hldkgDq2vLrw5f6g/jCInz52n9RTpropGgeAf/ioFUCdtsjCqu4gNhW9D01rUQBROoRjdzyn2Q==}
@@ -11195,7 +11193,7 @@ snapshots:
       quick-lru: 7.0.0
       url-join: 5.0.0
       validate-npm-package-name: 5.0.1
-      zod: 3.24.1
+      zod: 3.24.2
       zod-package-json: 1.0.3
 
   query-string@9.1.1:
@@ -12111,7 +12109,7 @@ snapshots:
 
   trough@2.2.0: {}
 
-  trpc-ui@1.0.13(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@5.16.12(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.446)(@types/react@18.3.18)(monaco-editor@0.52.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@3.24.1):
+  trpc-ui@1.0.15(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@mui/material@5.16.12(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react@18.2.0))(@types/react@18.3.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.446)(@types/react@18.3.18)(monaco-editor@0.52.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@4.1.12):
     dependencies:
       '@monaco-editor/react': 4.7.0(monaco-editor@0.52.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@stoplight/json-schema-sampler': 0.3.0
@@ -12127,8 +12125,8 @@ snapshots:
       string-byte-length: 1.6.0
       tailwind-merge: 2.6.0
       url: 0.11.4
-      zod: 3.24.1
-      zod-to-json-schema: 3.24.1(zod@3.24.1)
+      zod: 4.1.12
+      zod-to-json-schema: 3.25.0(zod@4.1.12)
     transitivePeerDependencies:
       - '@emotion/react'
       - '@emotion/styled'
@@ -12236,8 +12234,6 @@ snapshots:
       reflect.getprototypeof: 1.0.9
 
   typedarray@0.0.6: {}
-
-  typescript@4.9.5: {}
 
   typescript@5.7.2: {}
 
@@ -12625,19 +12621,15 @@ snapshots:
 
   zod-package-json@1.0.3:
     dependencies:
-      zod: 3.24.1
-
-  zod-to-json-schema@3.24.1(zod@3.24.1):
-    dependencies:
-      zod: 3.24.1
-
-  zod-to-json-schema@3.24.1(zod@3.24.2):
-    dependencies:
       zod: 3.24.2
 
-  zod@3.24.1: {}
+  zod-to-json-schema@3.25.0(zod@4.1.12):
+    dependencies:
+      zod: 4.1.12
 
   zod@3.24.2: {}
+
+  zod@4.1.12: {}
 
   zustand@4.5.5(@types/react@18.3.18)(react@18.2.0):
     dependencies:

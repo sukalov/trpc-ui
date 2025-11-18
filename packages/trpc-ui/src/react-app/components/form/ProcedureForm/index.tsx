@@ -29,7 +29,7 @@ import { Response } from "./Response";
 
 export const ROOT_VALS_PROPERTY_NAME = "vals";
 
-const wrapSuperJson = (json: JSON, usingSuperJson: boolean) => {
+const wrapSuperJson = (json: any, usingSuperJson: boolean) => {
   if (!usingSuperJson) {
     return json;
   }
@@ -95,10 +95,10 @@ export function ProcedureForm({
   } = useForm({
     resolver: ajvResolver(
       shouldValidate
-        ? wrapJsonSchema(procedure.inputSchema as any, {
+        ? (wrapJsonSchema(procedure.inputSchema as any, {
             rootPropertyName: ROOT_VALS_PROPERTY_NAME,
             useSuperJson: usingSuperJson,
-          })
+          }) as any)
         : {},
       {
         formats: fullFormats,
@@ -171,7 +171,7 @@ export function ProcedureForm({
                         setValue(
                           ROOT_VALS_PROPERTY_NAME,
                           wrapSuperJson(
-                            sample(procedure.inputSchema),
+                            sample(procedure.inputSchema as any),
                             usingSuperJson,
                           ),
                         );
@@ -209,7 +209,7 @@ export function ProcedureForm({
                     2,
                   )}
                   onChange={(value) =>
-                    setValue(ROOT_VALS_PROPERTY_NAME, JSON.parse(value ?? "{}"))
+                    setValue(ROOT_VALS_PROPERTY_NAME, JSON.parse(value ?? "{}") as any)
                   }
                 />
               )}

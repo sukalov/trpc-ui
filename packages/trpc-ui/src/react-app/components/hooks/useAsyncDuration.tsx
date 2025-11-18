@@ -16,8 +16,8 @@ export function useAsyncDuration({ options }: { options: RenderOptions }) {
       endTime = performance.now();
       const parsed =
         options.transformer === "superjson"
-          ? SuperJSON.deserialize(result)
-          : result;
+          ? SuperJSON.deserialize(result as any)
+          : ((result as any).json as any);
 
       return { isError: false, response: parsed };
     } catch (error) {

@@ -6,8 +6,10 @@ import {
 } from "@src/parse/__tests__/utils/router";
 import {
   type ParsedRouter,
+  parseRouter,
   parseRouterWithOptions,
 } from "@src/parse/parseRouter";
+
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 describe("Parse TRPC Router", () => {
@@ -19,7 +21,7 @@ describe("Parse TRPC Router", () => {
         testQuery: {
           nodeType: "procedure",
           node: expectedTestRouterInputParsedNode,
-          inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+          inputSchema: zodToJsonSchema(parseTestRouterInputSchema as any),
           procedureType: "query",
           pathFromRootRouter: ["testQuery"],
           extraData: {
@@ -29,7 +31,7 @@ describe("Parse TRPC Router", () => {
         testMutation: {
           nodeType: "procedure",
           node: expectedTestRouterInputParsedNode,
-          inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+          inputSchema: zodToJsonSchema(parseTestRouterInputSchema as any),
           procedureType: "mutation",
           pathFromRootRouter: ["testMutation"],
           extraData: {
@@ -54,7 +56,7 @@ describe("Parse TRPC Router", () => {
             testQuery: {
               nodeType: "procedure",
               node: expectedTestRouterInputParsedNode,
-              inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+              inputSchema: zodToJsonSchema(parseTestRouterInputSchema as any),
               procedureType: "query",
               pathFromRootRouter: ["nestedRouter", "testQuery"],
               extraData: {
@@ -64,7 +66,7 @@ describe("Parse TRPC Router", () => {
             testMutation: {
               nodeType: "procedure",
               node: expectedTestRouterInputParsedNode,
-              inputSchema: zodToJsonSchema(parseTestRouterInputSchema),
+              inputSchema: zodToJsonSchema(parseTestRouterInputSchema as any),
               procedureType: "mutation",
               pathFromRootRouter: ["nestedRouter", "testMutation"],
               extraData: {
@@ -78,8 +80,9 @@ describe("Parse TRPC Router", () => {
     const parseTestNestedRouter = testTrpcInstance.router({
       nestedRouter: parseTestRouter,
     });
-    const parsed = parseRouterWithOptions(parseTestNestedRouter, {});
+    const parsed = parseRouter(parseTestNestedRouter as any, [], {}); // Modified call
 
     expect(expected).toStrictEqual(parsed);
   });
 });
+
